@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - LibraryHub</title>
+    <!-- Bootstrap CSS from CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <img src="../images/logo.png" alt="Library Logo"> LibraryHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Browse</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Index.html#about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Index.html#contact-us">Contact</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary" href="login.html">Sign In</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Form Section -->
+    <section class="form-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="form-card">
+                        <div class="form-header">
+                            <h3>Login</h3>
+                        </div>
+                        <div class="form-body">
+                            <form id="loginForm">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="role" class="form-label">User Role</label>
+                                    <select class="form-select" id="role" required>
+                                        <option value="" selected disabled>Select your role</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="user">User</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Sign In</button>
+                                <p class="text-center mt-3 mb-0">Don't have an account? <a href="../Index.html#register" class="text-primary">Register here</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h4 class="footer-title">About LibraryHub</h4>
+                    <p>We're dedicated to providing access to knowledge and fostering a community of lifelong learners. Our digital library offers thousands of resources across various disciplines.</p>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Resources</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h4 class="footer-title">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Books</a></li>
+                        <li><a href="#">Journals</a></li>
+                        <li><a href="#">Digital Media</a></li>
+                        <li><a href="#">Research Papers</a></li>
+                        <li><a href="#">E-Learning</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="footer-title">Contact Us</h4>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-map-marker-alt"></i> Garthdee Road Aberdeen</p>
+                        <p><i class="fas fa-phone"></i> +44 789 448 1288</p>
+                        <p><i class="fas fa-envelope"></i> support@libraryhub.com</p>
+                    </div>
+                    <div class="social-links mt-3">
+                        <a href="#" class="me-3 text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="me-3 text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-3 text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="me-3 text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2025 LibraryHub(CMM007-PROJECT). All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript for form handling -->
+    <script src="../js/login.js"></script>
+</body>
+</html>
