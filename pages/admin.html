@@ -107,9 +107,65 @@
         </div>
     </section>
 
+    <!-- User Management Section -->
+    <section id="user-management" class="container mt-5">
+        <h2 class="section-title">User Management</h2>
+        <div class="row">
+            <!-- Add User Form -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Add User</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="addUserForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <select class="form-select" id="role" required>
+                                    <option value="admin">Admin</option>
+                                    <option value="user">User</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add User</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
+            <!-- User List -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>User List</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userList">
+                                <!-- User rows will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
