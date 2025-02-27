@@ -1,9 +1,8 @@
-// Wait for the DOM to load before executing the script
 document.addEventListener('DOMContentLoaded', function() {
     // Registration Form Handling
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
-        signupForm.addEventListener('submit', function(e) {
+        signupForm.addEventListener('submit', async function(e) {
             e.preventDefault(); // Prevent the form from submitting
 
             // Get form inputs
@@ -36,18 +35,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Simulate registration (in a real app, this would send data to a backend API)
-            showAlert('Registration successful! You can now sign in.', 'success');
-            
-            // Clear the form
-            signupForm.reset();
+             // Send registration data to the backend
+             try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, email, department, password }),
+                });
 
-            // Redirect to login page or dashboard (commented out for demo)
-            // setTimeout(() => {
-            //     window.location.href = 'login.html';
-            // }, 1500);
+                const data = await response.json();
 
-            // TODO: Connect to backend API for actual user registration
+                if (response.ok) {
+                    showAlert('Registration successful! You can now sign in.', 'success');
+                    signupForm.reset();
+                } else {
+                    showAlert(data.message || 'Registration failed.', 'danger');
+                }
+            } catch (err) {
+                showAlert('An error occurred. Please try again.', 'danger');
+            }
+
         });
     }
 
@@ -105,4 +114,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+// Helper function to show alerts
+function showAlert(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type}`;
+    alertDiv.textContent = message;
+
+    const container = document.querySelector('.form-section .container');
+    container.insertBefore(alertDiv, container.firstChild);
+
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 3000);
+}
     
