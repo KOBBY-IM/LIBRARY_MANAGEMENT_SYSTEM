@@ -114,6 +114,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+const response = await fetch('/api/users', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, email, role: 'user', password }),
+});
 
 // Helper function to show alerts
 function showAlert(message, type) {
