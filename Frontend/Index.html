@@ -10,8 +10,7 @@
     <!-- Font Awesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -22,19 +21,19 @@
             <a class="navbar-brand" href="#">
                 <img src="images/logo.png" alt="Library Logo"> LibraryHub
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
+                        <a class="nav-link active" href="#home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Browse</a>
+                        <a class="nav-link" href="#browse">Browse</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Services</a>
+                        <a class="nav-link" href="#services">Services</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#about-libraryhub">About</a>
@@ -42,7 +41,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contact-us">Contact</a>
                     </li>
-                    <a class="btn btn-primary" href="pages/login.html">Sign In</a>
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="pages/login.html">Sign In</a>
                     </li>
                 </ul>
             </div>
@@ -54,12 +54,10 @@
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Your Gateway to Knowledge</h1>
-                <p class="hero-subtitle">Access thousands of books, journals, and digital resources from anywhere,
-                    anytime.</p>
+                <p class="hero-subtitle">Access thousands of books, journals, and digital resources from anywhere, anytime.</p>
                 <a href="#register" class="btn btn-primary hero-btn">Get Started</a>
                 <a href="#features" class="btn btn-outline-light hero-btn">Learn More</a>
             </div>
-        </div>
         </div>
     </section>
 
@@ -69,9 +67,7 @@
             <div class="row">
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <h2 class="section-title text-start">Join Our Library Network</h2>
-                    <p class=>Create your account today to unlock the full potential of our library resources. Get
-                        instant access to our digital collection, manage your borrowed items, and participate in our
-                        exclusive events.</p>
+                    <p>Create your account today to unlock the full potential of our library resources. Get instant access to our digital collection, manage your borrowed items, and participate in our exclusive events.</p>
 
                     <div class="row mt-5">
                         <div class="col-md-6 mb-4">
@@ -126,16 +122,16 @@
                             <h3>Create Your Account</h3>
                         </div>
                         <div class="form-body">
+                            <!-- Error Message Container -->
+                            <div id="error-message" class="alert alert-danger" style="display: none;"></div>
                             <form id="signupForm">
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="username"
-                                        placeholder="Choose a username" required>
+                                    <input type="text" class="form-control" id="username" placeholder="Choose a username" required minlength="3">
                                 </div>
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" id="email" placeholder="Enter your email"
-                                        required>
+                                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="department" class="form-label">Department</label>
@@ -153,17 +149,14 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password"
-                                        placeholder="Create a password" required>
+                                    <input type="password" class="form-control" id="password" placeholder="Create a password" required minlength="6">
                                 </div>
                                 <div class="mb-3">
                                     <label for="confirmPassword" class="form-label">Confirm Password</label>
-                                    <input type="password" class="form-control" id="confirmPassword"
-                                        placeholder="Confirm your password" required>
+                                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required minlength="6">
                                 </div>
                                 <button type="submit" class="btn btn-primary register-btn">Create Account</button>
-                                <p class="text-center mt-3 mb-0">Already have an account? <a href="pages/login.html"
-                                        class="text-primary">Sign In</a></p>
+                                <p class="text-center mt-3 mb-0">Already have an account? <a href="pages/login.html" class="text-primary">Sign In</a></p>
                             </form>
                         </div>
                     </div>
@@ -178,27 +171,26 @@
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <h4 class="footer-title">About LibraryHub</h4>
-                    <p>We're dedicated to providing access to knowledge and fostering a community of lifelong learners.
-                        Our digital library offers thousands of resources across various disciplines.</p>
+                    <p>We're dedicated to providing access to knowledge and fostering a community of lifelong learners. Our digital library offers thousands of resources across various disciplines.</p>
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                     <h4 class="footer-title">Quick Links</h4>
                     <ul class="footer-links">
-                        <li><a href="../Index.html">Home</a></li>
+                        <li><a href="#home">Home</a></li>
                         <li><a href="#about-libraryhub">About Us</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Resources</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#resources">Resources</a></li>
                         <li><a href="#contact-us">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                     <h4 class="footer-title">Resources</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Books</a></li>
-                        <li><a href="#">Journals</a></li>
-                        <li><a href="#">Digital Media</a></li>
-                        <li><a href="#">Research Papers</a></li>
-                        <li><a href="#">E-Learning</a></li>
+                        <li><a href="#books">Books</a></li>
+                        <li><a href="#journals">Journals</a></li>
+                        <li><a href="#digital-media">Digital Media</a></li>
+                        <li><a href="#research-papers">Research Papers</a></li>
+                        <li><a href="#e-learning">E-Learning</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4">

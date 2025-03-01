@@ -18,7 +18,7 @@
             <a class="navbar-brand" href="#">
                 <img src="../images/logo.png" alt="Library Logo"> LibraryHub Admin
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -40,76 +40,79 @@
         </div>
     </nav>
 
-
-    <!-- Book Management Section -->
-    <section id="book-management" class="container mt-5">
-        <h2 class="section-title">Book Management</h2>
-        <div class="row">
-            <!-- Add Book Form -->
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5>Add Book</h5>
-                    </div>
-                    <div class="card-body">
-                        <form id="addBookForm">
-                            <div class="mb-3">
-                                <label for="title" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="title" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="author" class="form-label">Author</label>
-                                <input type="text" class="form-control" id="author" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="isbn" class="form-label">ISBN</label>
-                                <input type="text" class="form-control" id="isbn" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="genre" class="form-label">Genre</label>
-                                <input type="text" class="form-control" id="genre" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="quantity" class="form-label">Quantity</label>
-                                <input type="number" class="form-control" id="quantity" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Add Book</button>
-                        </form>
-                    </div>
+<!-- Book Management Section -->
+<section id="book-management" class="container mt-5">
+    <h2 class="section-title">Book Management</h2>
+    <!-- Error Message Container -->
+    <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+    <div class="row">
+        <!-- Add Book Form -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Add Book</h5>
                 </div>
-            </div>
-
-            <!-- Book List -->
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Book List</h5>
-                    </div>
-                    <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Author</th>
-                                    <th>ISBN</th>
-                                    <th>Genre</th>
-                                    <th>Quantity</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="bookList">
-                                <!-- Book rows will be dynamically added here -->
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="card-body">
+                    <form id="addBookForm">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="author" class="form-label">Author</label>
+                            <input type="text" class="form-control" id="author" name="author" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="isbn" class="form-label">ISBN</label>
+                            <input type="text" class="form-control" id="isbn" name="isbn" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="genre" class="form-label">Genre</label>
+                            <input type="text" class="form-control" id="genre" name="genre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="add-book-submit-button">Add Book</button>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
+
+        <!-- Book List -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Book List</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>ISBN</th>
+                                <th>Genre</th>
+                                <th>Quantity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookList">
+                            <!-- Book rows will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
     <!-- User Management Section -->
     <section id="user-management" class="container mt-5">
         <h2 class="section-title">User Management</h2>
+        <!-- Error Message Container -->
+        <div id="user-error-message" class="alert alert-danger" style="display: none;"></div>
         <div class="row">
             <!-- Add User Form -->
             <div class="col-md-6">
@@ -121,20 +124,24 @@
                         <form id="addUserForm">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" required>
+                                <input type="text" class="form-control" id="name" name="name" required minlength="3">
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" required>
+                                <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="role" class="form-label">Role</label>
-                                <select class="form-select" id="role" required>
+                                <select class="form-select" id="role" name="role" required>
+                                    <option value="" selected disabled>Select a role</option>
                                     <option value="admin">Admin</option>
                                     <option value="user">User</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Add User</button>
+                            <button type="submit" class="btn btn-primary" id="add-user-submit-button">
+                                <span id="add-user-text">Add User</span>
+                                <span id="add-user-spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                            </button>
                         </form>
                     </div>
                 </div>
