@@ -1,0 +1,14 @@
+#  pnpm-lock.yamal file in backend directory
+../backend/pnpmlock.yamal
+
+
+./backend/pnpm-lock.yaml
+
+# pnpm-lock
+pnpm-lock.yaml
+
+
+
+#node_modules
+node_modules
+

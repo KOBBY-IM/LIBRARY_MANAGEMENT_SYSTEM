@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const addBookForm = document.getElementById('addBookForm');
     const bookList = document.getElementById('bookList');
-    const errorMessage = document.getElementById('error-message'); // Ensure this exists in the HTML
-    const submitButton = document.getElementById('add-book-submit-button'); // Ensure this exists in the HTML
+    const errorMessage = document.getElementById('error-message'); 
+    const submitButton = document.getElementById('add-book-submit-button');
 
     // Fetch and display books
     const fetchBooks = async () => {

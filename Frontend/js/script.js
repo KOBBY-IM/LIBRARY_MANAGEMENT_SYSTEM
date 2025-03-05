@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Registration Form Handling
     const signupForm = document.getElementById('signupForm');
-    const errorMessage = document.getElementById('error-message'); // Ensure this exists in the HTML
+    const errorMessage = document.getElementById('error-message');
 
     if (signupForm) {
         signupForm.addEventListener('submit', async function (e) {
