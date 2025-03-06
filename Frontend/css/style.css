@@ -443,3 +443,25 @@ body {
     padding: 1.5rem 0;
     text-align: center;
 }
+
+/* Scrollable table container */
+.scrollable-table-container {
+    max-height: 700px; /* Adjust the height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #ddd; /* Optional: Add a border */
+    border-radius: 6px; /* Optional: Add rounded corners */
+}
+
+/* Optional: Style the scrollbar */
+.scrollable-table-container::-webkit-scrollbar {
+    width: 12px;
+}
+
+.scrollable-table-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+.scrollable-table-container::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}

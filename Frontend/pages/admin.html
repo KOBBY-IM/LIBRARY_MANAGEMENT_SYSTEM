@@ -86,7 +86,9 @@
                 <div class="card-header">
                     <h5>Book List</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body scrollable-table-container">
+                    <div class="mb-3">
+                        <input type="text" id="bookSearch" class="form-control" placeholder="Search books by title, author, or genre...">
                     <table class="table">
                         <thead>
                             <tr>
@@ -99,6 +101,17 @@
                             </tr>
                         </thead>
                         <tbody id="bookList">
+                            <tr data-id="1">
+                                <td>The Great Gatsby</td>
+                                <td>F. Scott Fitzgerald</td>
+                                <td>9780743273565</td>
+                                <td>Fiction</td>
+                                <td>10</td>
+                                <td>
+                                    <button class="btn btn-warning edit-btn" data-id="1">Edit</button>
+                                    <button class="btn btn-danger delete-btn" data-id="1">Delete</button>
+                                </td>
+                            </tr>
                             <!-- Book rows will be dynamically added here -->
                         </tbody>
                     </table>
@@ -153,7 +166,10 @@
                     <div class="card-header">
                         <h5>User List</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body scrollable-table-container">
+                        <div class="mb-3">
+                            <input type="text" id="userSearch" class="form-control" placeholder="Search users by name or email...">
+                        </div>
                         <table class="table">
                             <thead>
                                 <tr>
