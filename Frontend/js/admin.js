@@ -274,7 +274,6 @@ window.editBook = (bookId) => {
                         <td>${user.email}</td>
                         <td>${user.role}</td>
                         <td>
-                            <button class="btn btn-warning" onclick="editUser(${user.id})">Edit</button>
                             <button class="btn btn-danger" onclick="deleteUser(${user.id})">Delete</button>
                         </td>
                     </tr>
