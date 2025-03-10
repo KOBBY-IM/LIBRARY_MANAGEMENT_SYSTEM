@@ -23,6 +23,14 @@ app.use(express.json());
 // Serve static files from the frontend folder
 app.use(express.static(path.join(__dirname, '../Frontend')));
 
+// Log request to the server
+app.use((req, res, next) => {
+    console.log(req.method, req.url);
+    console.log('Request body:', req.body);
+    next();
+});
+
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
@@ -45,12 +53,6 @@ app.get('*', (req, res) => {
     }
 })();
 
-// Log request to the server
-app.use((req, res, next) => {
-    console.log(req.method, req.url);
-    console.log('Request body:', req.body);
-    next();
-});
 
 // Start the server
 app.listen(PORT, () => {
