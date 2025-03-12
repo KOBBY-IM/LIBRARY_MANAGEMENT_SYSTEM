@@ -32,33 +32,36 @@ const login = async (req, res) => {
 
     try {
         // Fetch user from the database
-        const [user] = await pool.query(
+        const [users] = await pool.query(
             'SELECT * FROM users WHERE username = ? AND role = ?',
             [username, role]
         );
 
-        // Check if user exists
-        if (user.length === 0) {
+        if (!users || users.length === 0) {
             return res.status(400).json({ message: 'User not found or role mismatch' });
         }
 
+        const user = users[0];
+
         // Compare passwords
-        const validPassword = await bcrypt.compare(password, user[0].password);
+        const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) {
             return res.status(400).json({ message: 'Invalid password' });
         }
 
         // Generate JWT token
-        const token = jwt.sign({ id: user[0].id, role: user[0].role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        // Return token and role
-        res.json({ token, role: user[0].role });
+        res.json({ 
+            token, 
+            role: user.role, 
+            user: { id: user.id } 
+        });
     } catch (err) {
         console.error('Error during login:', err);
         res.status(500).json({ message: 'An error occurred during login' });
     }
 };
-
 
 
 module.exports = { register, login };

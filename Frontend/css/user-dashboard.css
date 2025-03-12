@@ -1,0 +1,307 @@
+/* Redesigned User Dashboard CSS */
+
+/* Sidebar */
+.sidebar-menu {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: 100%;
+}
+
+.user-welcome {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.sidebar-link {
+    color: var(--dark-color);
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+    color: var(--secondary-color);
+    background-color: rgba(66, 133, 244, 0.1);
+    border-left: 3px solid var(--secondary-color);
+}
+
+/* Main content sections */
+.content-section {
+    display: none;
+    background-color: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.content-section.active {
+    display: block;
+}
+
+.section-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0;
+    position: relative;
+}
+
+/* Genre section and book cards */
+.genre-section {
+    margin-bottom: 2rem;
+}
+
+.genre-section h3 {
+    font-size: 1.2rem;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.books-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.book-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 220px;
+    text-align: left;
+    background-color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.book-card h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.book-card p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    color: var(--gray-color);
+}
+
+.book-card .book-info {
+    margin-bottom: 1rem;
+}
+
+.borrow-btn {
+    width: 100%;
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+.borrow-btn:hover {
+    background-color: #3367d6;
+    border-color: #3367d6;
+}
+
+.borrow-btn:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+}
+
+/* Loan stats */
+.stat-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+/* Table styling */
+.scrollable-table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 6px;
+}
+
+.table th {
+    position: sticky;
+    top: 0;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.table th, .table td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+}
+
+/* Status badges */
+.status-badge {
+    padding: 0.35rem 0.65rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-current {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-overdue {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.status-returned {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+/* Profile section */
+.profile-image-container {
+    padding: 1rem;
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    color: #ccc;
+}
+
+/* Notification section */
+.notification-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    display: flex;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    align-items: flex-start;
+    transition: all 0.3s ease;
+}
+
+.notification-item:hover {
+    background-color: #f9f9f9;
+}
+
+.notification-item.unread {
+    background-color: rgba(66, 133, 244, 0.05);
+}
+
+.notification-icon {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.notification-content {
+    flex-grow: 1;
+}
+
+.notification-content h5 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.notification-content p {
+    font-size: 0.9rem;
+    color: var(--gray-color);
+    margin-bottom: 0.25rem;
+}
+
+.notification-time {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.notification-actions {
+    margin-left: 1rem;
+    flex-shrink: 0;
+}
+
+/* Search container */
+.search-container {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .sidebar-menu {
+        margin-bottom: 1.5rem;
+    }
+
+    .books-container {
+        justify-content: center;
+    }
+
+    .book-card {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+
+    .notification-item {
+        flex-direction: column;
+    }
+
+    .notification-icon {
+        margin-bottom: 0.5rem;
+    }
+
+    .notification-actions {
+        margin-left: 0;
+        margin-top: 0.5rem;
+        display: flex;
+        gap: 0.5rem;
+    }
+}

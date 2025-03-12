@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', async function () {
+document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('loginForm');
     const errorMessage = document.getElementById('login-error-message');
     const submitButton = document.getElementById('login-submit-button');
@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     loginForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
         const role = document.getElementById('role').value;
 
         // Clear previous errors
@@ -33,38 +33,32 @@ document.addEventListener('DOMContentLoaded', async function () {
                 body: JSON.stringify({ username, password, role }),
             });
 
-            // Handle non-JSON responses
             if (!response.ok) {
-                const errorData = await response.text(); // Handle HTML or plain text responses
-                throw new Error(errorData || 'Login failed. Please try again.');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Login failed. Please check your credentials.');
             }
 
             const data = await response.json();
 
-            // Debug the response
-            console.log('Role:', data.role);
-            console.log('Token:', data.token);
+            // Store token and user details in localStorage
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.user.id);
+            localStorage.setItem('role', data.role);
 
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                if (data.role === 'admin') {
-                    window.location.href = '/pages/admin.html'; 
-                } else if (data.role === 'user') {
-                    window.location.href = '/pages/user.html';
-                }
-            } else {
-                showError(data.message || 'Login failed. Please check your credentials.');
+            // Redirect based on role
+            if (data.role === 'admin') {
+                window.location.href = '/pages/admin.html';
+            } else if (data.role === 'user') {
+                window.location.href = '/pages/user.html';
             }
         } catch (err) {
             showError(err.message || 'An error occurred. Please try again.');
         } finally {
-            // Re-enable the submit button and reset its text
             submitButton.disabled = false;
             submitButton.innerHTML = 'Sign In';
         }
     });
 
-    // Helper function to show errors
     function showError(message, type = 'danger') {
         errorMessage.textContent = message;
         errorMessage.className = `alert alert-${type}`;

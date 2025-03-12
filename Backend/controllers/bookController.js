@@ -57,16 +57,42 @@ const deleteBook = async (req, res) => {
 
 // Search for books by title or author
 const searchBooks = async (req, res) => {
-    const { searchTerm } = req.params;
+    const { searchTerm } = req.query;
+
+    if (!searchTerm || searchTerm.trim() === '') {
+        return res.status(400).json({ 
+            success: false, 
+            message: 'Search term is required' 
+        });
+    }
 
     try {
-        const [books] = await pool.query('SELECT * FROM books WHERE title LIKE ? OR author LIKE ?', [`%${searchTerm}%`, `%${searchTerm}%`]);
+        // Improved search query that also includes genre
+        const [books] = await pool.query(
+            'SELECT * FROM books WHERE title LIKE ? OR author LIKE ? OR genre LIKE ?', 
+            [`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`]
+        );
+        
+        // Sort results by relevance (exact matches first, then partial matches)
+        books.sort((a, b) => {
+            // Check for exact title matches first
+            if (a.title.toLowerCase() === searchTerm.toLowerCase()) return -1;
+            if (b.title.toLowerCase() === searchTerm.toLowerCase()) return 1;
+            
+            // Then check for titles that start with the search term
+            if (a.title.toLowerCase().startsWith(searchTerm.toLowerCase())) return -1;
+            if (b.title.toLowerCase().startsWith(searchTerm.toLowerCase())) return 1;
+            
+            // Then sort by title for consistent results
+            return a.title.localeCompare(b.title);
+        });
+        
         res.json({ success: true, data: books });
     } catch (err) {
+        console.error('Search error:', err);
         res.status(500).json({ success: false, message: err.message });
     }
 };
-
 // Get a single book by ID
 const getBookById = async (req, res) => {
     const { id } = req.params;
