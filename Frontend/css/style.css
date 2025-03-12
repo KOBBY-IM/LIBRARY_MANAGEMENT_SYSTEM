@@ -444,13 +444,34 @@ body {
     text-align: center;
 }
 
-/* Scrollable table container */
-.scrollable-table-container {
-    max-height: 700px; /* Adjust the height as needed */
-    overflow-y: auto; /* Enable vertical scrolling */
-    border: 1px solid #ddd; /* Optional: Add a border */
-    border-radius: 6px; /* Optional: Add rounded corners */
+/* Prevent horizontal scrolling */
+body {
+    overflow-x: hidden;
 }
+
+/* Make tables responsive without overflow */
+.scrollable-table-container {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+/* Ensure the table fits within the parent container */
+.table {
+    table-layout: fixed;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+/* Space out action buttons */
+.table td .btn {
+    margin-right: 5px;
+}
+
 
 /* Optional: Style the scrollbar */
 .scrollable-table-container::-webkit-scrollbar {

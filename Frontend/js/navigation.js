@@ -1,4 +1,3 @@
-// This script handles navigation between the different sections in the user dashboard
 
 document.addEventListener('DOMContentLoaded', function() {
     // Handle navigation from navbar links
@@ -26,7 +25,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Show the correct content section
                 const contentSections = document.querySelectorAll('.content-section');
                 contentSections.forEach(section => section.classList.remove('active'));
-                document.getElementById(targetId).classList.add('active');
+                
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    
+                    // Scroll to top of the section on mobile for better UX
+                    if (window.innerWidth < 768) {
+                        targetSection.scrollIntoView({behavior: 'smooth'});
+                    }
+                }
             }
         });
     });
@@ -42,13 +50,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetId = this.getAttribute('href').substring(1);
             
             // Update active sidebar link
-            document.querySelectorAll('.sidebar-link').forEach(sidebarLink => sidebarLink.classList.remove('active'));
+            document.querySelectorAll('.sidebar-link').forEach(sidebarLink => 
+                sidebarLink.classList.remove('active'));
             this.classList.add('active');
             
             // Show the correct content section
             const contentSections = document.querySelectorAll('.content-section');
             contentSections.forEach(section => section.classList.remove('active'));
-            document.getElementById(targetId).classList.add('active');
+            
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
         });
     });
 
@@ -59,8 +72,22 @@ document.addEventListener('DOMContentLoaded', function() {
             navLinks.forEach(link => {
                 link.addEventListener('click', function() {
                     const navbarCollapse = document.querySelector('.navbar-collapse');
-                    if (navbarCollapse.classList.contains('show')) {
-                        document.querySelector('.navbar-toggler').click();
+                    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                        const navbarToggler = document.querySelector('.navbar-toggler');
+                        if (navbarToggler) {
+                            navbarToggler.click();
+                        }
+                    }
+                });
+            });
+            
+            // Same for sidebar links on mobile
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    // If there's a mobile sidebar toggle, handle it here
+                    const mobileSidebarToggle = document.querySelector('.mobile-sidebar-toggle');
+                    if (mobileSidebarToggle && document.querySelector('.sidebar-menu').classList.contains('show')) {
+                        mobileSidebarToggle.click();
                     }
                 });
             });
@@ -70,4 +97,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Call on page load and window resize
     adjustForMobile();
     window.addEventListener('resize', adjustForMobile);
+    
+    // Prevent content from affecting sidebar by ensuring proper height containment
+    function adjustContentHeight() {
+        const contentSections = document.querySelectorAll('.content-section');
+        const mainContentArea = document.querySelector('.col-md-9');
+        
+        if (mainContentArea) {
+            contentSections.forEach(section => {
+                // Ensure each section's height doesn't overflow its container
+                if (section.classList.contains('active')) {
+                    section.style.maxHeight = `${window.innerHeight - 100}px`;
+                    section.style.overflowY = 'auto';
+                }
+            });
+        }
+    }
+    
+    // Apply on load and resize
+    adjustContentHeight();
+    window.addEventListener('resize', adjustContentHeight);
 });
