@@ -29,15 +29,43 @@ const loan = {
                 'SELECT COUNT(*) AS count FROM loans WHERE user_id = ? AND due_date < CURDATE() AND returned = FALSE',
                 [userId]
             );
-
-            // Apply penalty if overdue loans exist
-            const maxLoans = overdueLoans[0].count > 0 ? 3 : 5; // Penalty: Reduce limit to 3 if overdue
+            
+            const overdueCount = overdueLoans[0].count;
+            
+            // Apply progressive penalty based on number of overdue books
+            let maxLoans = 10; // Increased default max to 10
+            let penaltyPoints = 0;
+            
+            if (overdueCount > 0) {
+                // Calculate penalty points (2 points per overdue book)
+                penaltyPoints = overdueCount * 2;
+                
+                // Apply penalty to max loans allowed
+                if (overdueCount >= 3) {
+                    maxLoans = 3; // Severe penalty
+                } else if (overdueCount === 2) {
+                    maxLoans = 5; // Moderate penalty
+                } else {
+                    maxLoans = 7; // Mild penalty
+                }
+                
+                // Record penalty points
+                try {
+                    await connection.query(
+                        'UPDATE users SET penalty_points = penalty_points + ? WHERE id = ?',
+                        [penaltyPoints, userId]
+                    );
+                } catch (err) {
+                    console.log("Could not update penalty points, column might not exist:", err);
+                }
+            }
 
             // Check if the user has already borrowed the maximum number of books
             const [loans] = await connection.query(
                 'SELECT COUNT(*) AS count FROM loans WHERE user_id = ? AND returned = FALSE',
                 [userId]
             );
+            
             if (loans[0].count >= maxLoans) {
                 throw new Error(`You have reached the maximum number of borrowed books (${maxLoans})`);
             }
@@ -55,6 +83,12 @@ const loan = {
             await connection.query('INSERT INTO loans (user_id, book_id, due_date) VALUES (?, ?, ?)', [userId, bookId, dueDate]);
 
             await connection.commit();
+            
+            return {
+                success: true,
+                maxLoansAllowed: maxLoans,
+                penaltyPoints: penaltyPoints
+            };
         } catch (err) {
             await connection.rollback();
             throw err;
@@ -69,14 +103,66 @@ const loan = {
         try {
             await connection.beginTransaction();
 
+            // Get loan details
+            const [loanDetails] = await connection.query(
+                'SELECT l.*, b.id as book_id, b.title FROM loans l JOIN books b ON l.book_id = b.id WHERE l.id = ?',
+                [loanId]
+            );
+            
+            if (loanDetails.length === 0) {
+                throw new Error('Loan record not found');
+            }
+            
+            const loan = loanDetails[0];
+            
+            // Check if already returned
+            if (loan.returned) {
+                throw new Error('This book has already been returned');
+            }
+            
+            // Check if overdue and apply penalty
+            const dueDate = new Date(loan.due_date);
+            const today = new Date();
+            let penaltyPoints = 0;
+            
+            if (dueDate < today) {
+                // Calculate days overdue
+                const diffTime = Math.abs(today - dueDate);
+                const overdueDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                // Apply penalty (1 point per day)
+                penaltyPoints = overdueDays;
+                
+                // Record penalty
+                try {
+                    await connection.query(
+                        'UPDATE users SET penalty_points = penalty_points + ? WHERE id = ?',
+                        [penaltyPoints, loan.user_id]
+                    );
+                    
+                    // Record in penalties table
+                    await connection.query(
+                        'INSERT INTO penalties (user_id, loan_id, overdue_days, penalty_points, penalty_date) VALUES (?, ?, ?, ?, NOW())',
+                        [loan.user_id, loanId, overdueDays, penaltyPoints]
+                    );
+                } catch (err) {
+                    console.log("Could not record penalty, table might not exist:", err);
+                }
+            }
+
             // Mark loan as returned
-            await connection.query('UPDATE loans SET returned = TRUE WHERE id = ?', [loanId]);
+            await connection.query('UPDATE loans SET returned = TRUE, return_date = NOW() WHERE id = ?', [loanId]);
 
             // Increase book quantity
-            const [loan] = await connection.query('SELECT book_id FROM loans WHERE id = ?', [loanId]);
-            await connection.query('UPDATE books SET quantity = quantity + 1 WHERE id = ?', [loan[0].book_id]);
+            await connection.query('UPDATE books SET quantity = quantity + 1 WHERE id = ?', [loan.book_id]);
 
             await connection.commit();
+            
+            return {
+                success: true,
+                bookTitle: loan.title,
+                penaltyPoints: penaltyPoints
+            };
         } catch (err) {
             await connection.rollback();
             throw err;

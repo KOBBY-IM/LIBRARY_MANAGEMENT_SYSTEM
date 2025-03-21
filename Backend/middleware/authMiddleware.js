@@ -20,4 +20,5 @@ const authMiddleware = (roles) => {
     };
 };
 
+
 module.exports = authMiddleware;

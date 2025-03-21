@@ -11,6 +11,9 @@ const authRoutes = require('./routes/authRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const userRoutes = require('./routes/userRoutes');
 const loanRoutes = require('./routes/loanRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+
+
 const pool = require('./config/db');
 
 const app = express();
@@ -36,6 +39,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/loans', loanRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Catch-all route to serve the frontend
 app.get('*', (req, res) => {

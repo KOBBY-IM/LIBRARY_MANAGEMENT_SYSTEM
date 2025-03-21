@@ -181,17 +181,29 @@
                     <div class="penalty-explanation mb-4">
                         <div class="alert alert-info">
                             <h5><i class="fas fa-info-circle"></i> Penalty System Explanation</h5>
-                            <p>Our library implements a progressive penalty system for overdue books:</p>
+                            <p>Our library uses a quarterly penalty system to encourage timely returns:</p>
                             <ul>
-                                <li><strong>Mild Penalty (1 overdue book):</strong> Borrowing limit reduced to 3 books</li>
-                                <li><strong>Moderate Penalty (2 overdue books):</strong> Borrowing limit reduced to 2 books</li>
-                                <li><strong>Severe Penalty (3+ overdue books):</strong> Borrowing limit reduced to 1 book</li>
+                                <li><strong>Overdue Books Penalties:</strong>
+                                    <ul>
+                                        <li><strong>Mild Penalty (1 overdue book):</strong> Borrowing limit reduced to <strong>7 books</strong>. +2 penalty points per overdue book.</li>
+                                        <li><strong>Moderate Penalty (2 overdue books):</strong> Borrowing limit reduced to <strong>5 books</strong>. +2 penalty points per overdue book.</li>
+                                        <li><strong>Severe Penalty (3+ overdue books):</strong> Borrowing limit reduced to <strong>3 books</strong>. +2 penalty points per overdue book.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Late Returns:</strong> Each day a book is returned past its due date adds <strong>1 penalty point</strong> to your account.</li>
+                                <li><strong>Quarterly Reset:</strong> Penalties are tracked by quarter (Q1-Q4). Your borrowing privileges will be restored at the beginning of each new quarter.</li>
                             </ul>
-                            <p>Return your books on time to maintain your full borrowing privileges of 5 books!</p>
+                            <p><strong>Late returns:</strong> Each overdue day adds <strong>1 penalty point</strong>. Avoid penalties by returning books on time!</p>
                         </div>
                     </div>
                     <div id="penalty-history-container">
-                        <!-- Penalty history will be loaded here -->
+                        <!-- Penalty history will be dynamically loaded here -->
+                    </div>
+                    <div class="penalty-summary mt-4">
+                        <div class="alert alert-warning">
+                            <h5><i class="fas fa-exclamation-triangle"></i> Total Penalty Points: <span id="total-penalty-points">0</span></h5>
+                            <p>Accumulating too many penalty points may impact your borrowing privileges.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -202,32 +214,39 @@
                     </div>
                     <div class="profile-content">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="profile-image-container text-center mb-4">
-                                    <div class="profile-image">
-                                        <i class="fas fa-user-circle"></i>
-                                    </div>
-                                    <button class="btn btn-sm btn-primary mt-2">Change Photo</button>
-                                </div>
-                            </div>
                             <div class="col-md-8">
                                 <form id="profile-form">
+                                    <!-- Username (read-only) -->
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Full Name</label>
-                                        <input type="text" class="form-control" id="username" value="John Doe">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input type="text" class="form-control" id="username" readonly>
                                     </div>
+                
+                                    <!-- Full Name -->
+                                    <div class="mb-3">
+                                        <label for="fullName" class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" id="fullName">
+                                    </div>
+                
+                                    <!-- Email -->
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email" value="john.doe@example.com" readonly>
+                                        <input type="email" class="form-control" id="email">
                                     </div>
+                
+                                    <!-- Phone Number -->
                                     <div class="mb-3">
-                                        <label for="phone" class="form-label">Phone</label>
-                                        <input type="text" class="form-control" id="phone" value="123-456-7890">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <input type="text" class="form-control" id="phone">
                                     </div>
+                
+                                    <!-- Address -->
                                     <div class="mb-3">
                                         <label for="address" class="form-label">Address</label>
-                                        <textarea class="form-control" id="address" rows="3">123 Library St, Book City</textarea>
+                                        <textarea class="form-control" id="address" rows="3"></textarea>
                                     </div>
+                
+                                    <!-- Submit Button -->
                                     <button type="submit" class="btn btn-primary">Update Profile</button>
                                 </form>
                             </div>
