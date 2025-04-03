@@ -84,7 +84,8 @@
                     <div class="search-container mb-4">
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
-                            <input type="text" id="search-bar" class="form-control" placeholder="Search by title, author, or genre">
+                            <input type="text" id="search-bar" class="form-control"
+                                placeholder="Search by title, author, or genre">
                             <select id="genre-filter" class="form-select" style="max-width: 150px;">
                                 <option value="">All Genres</option>
                                 <!-- Will be populated dynamically -->
@@ -145,8 +146,8 @@
                                     <div class="borrow-limit-info">
                                         <h6>Borrowing Limit: 0/5</h6>
                                         <div class="progress">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%" 
-                                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="5">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%"
+                                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="5">
                                             </div>
                                         </div>
                                     </div>
@@ -185,15 +186,21 @@
                             <ul>
                                 <li><strong>Overdue Books Penalties:</strong>
                                     <ul>
-                                        <li><strong>Mild Penalty (1 overdue book):</strong> Borrowing limit reduced to <strong>7 books</strong>. +2 penalty points per overdue book.</li>
-                                        <li><strong>Moderate Penalty (2 overdue books):</strong> Borrowing limit reduced to <strong>5 books</strong>. +2 penalty points per overdue book.</li>
-                                        <li><strong>Severe Penalty (3+ overdue books):</strong> Borrowing limit reduced to <strong>3 books</strong>. +2 penalty points per overdue book.</li>
+                                        <li><strong>Mild Penalty (1 overdue book):</strong> Borrowing limit reduced to
+                                            <strong>7 books</strong>. +2 penalty points per overdue book.</li>
+                                        <li><strong>Moderate Penalty (2 overdue books):</strong> Borrowing limit reduced
+                                            to <strong>5 books</strong>. +2 penalty points per overdue book.</li>
+                                        <li><strong>Severe Penalty (3+ overdue books):</strong> Borrowing limit reduced
+                                            to <strong>3 books</strong>. +2 penalty points per overdue book.</li>
                                     </ul>
                                 </li>
-                                <li><strong>Late Returns:</strong> Each day a book is returned past its due date adds <strong>1 penalty point</strong> to your account.</li>
-                                <li><strong>Quarterly Reset:</strong> Penalties are tracked by quarter (Q1-Q4). Your borrowing privileges will be restored at the beginning of each new quarter.</li>
+                                <li><strong>Late Returns:</strong> Each day a book is returned past its due date adds
+                                    <strong>1 penalty point</strong> to your account.</li>
+                                <li><strong>Quarterly Reset:</strong> Penalties are tracked by quarter (Q1-Q4). Your
+                                    borrowing privileges will be restored at the beginning of each new quarter.</li>
                             </ul>
-                            <p><strong>Late returns:</strong> Each overdue day adds <strong>1 penalty point</strong>. Avoid penalties by returning books on time!</p>
+                            <p><strong>Late returns:</strong> Each overdue day adds <strong>1 penalty point</strong>.
+                                Avoid penalties by returning books on time!</p>
                         </div>
                     </div>
                     <div id="penalty-history-container">
@@ -201,7 +208,8 @@
                     </div>
                     <div class="penalty-summary mt-4">
                         <div class="alert alert-warning">
-                            <h5><i class="fas fa-exclamation-triangle"></i> Total Penalty Points: <span id="total-penalty-points">0</span></h5>
+                            <h5><i class="fas fa-exclamation-triangle"></i> Total Penalty Points: <span
+                                    id="total-penalty-points">0</span></h5>
                             <p>Accumulating too many penalty points may impact your borrowing privileges.</p>
                         </div>
                     </div>
@@ -221,31 +229,31 @@
                                         <label for="username" class="form-label">Username</label>
                                         <input type="text" class="form-control" id="username" readonly>
                                     </div>
-                
+
                                     <!-- Full Name -->
                                     <div class="mb-3">
                                         <label for="fullName" class="form-label">Full Name</label>
                                         <input type="text" class="form-control" id="fullName">
                                     </div>
-                
+
                                     <!-- Email -->
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" class="form-control" id="email">
                                     </div>
-                
+
                                     <!-- Phone Number -->
                                     <div class="mb-3">
                                         <label for="phone" class="form-label">Phone Number</label>
                                         <input type="text" class="form-control" id="phone">
                                     </div>
-                
+
                                     <!-- Address -->
                                     <div class="mb-3">
                                         <label for="address" class="form-label">Address</label>
                                         <textarea class="form-control" id="address" rows="3"></textarea>
                                     </div>
-                
+
                                     <!-- Submit Button -->
                                     <button type="submit" class="btn btn-primary">Update Profile</button>
                                 </form>
@@ -316,8 +324,13 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JavaScript -->
-    <script src="../js/user.js"></script>
-    <script src="../js/navigation.js"></script>
+    <script src="../js/utils/utilities.js"></script>
+    <script src="../js/api/auth.js"></script>
+    <script src="../js/api/books.js"></script>
+    <script src="../js/api/loans.js"></script>
+    <script src="../js/api/notifications.js"></script>
+    <script src="../js/api/users.js"></script>
+    <script src="../js/pages/user.js"></script>
 </body>
 
 </html>
