@@ -1,64 +1,41 @@
 // Convert from ES module syntax to regular function
-const Users = {
-    fetchUsers: async function(token) {
+const Penalties = {
+    fetchPenaltyHistory: async function(userId, token) {
         try {
-            const response = await fetch('/api/users', {
+            const response = await fetch(`/api/loans/penalties/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
             });
 
             if (!response.ok) {
-                throw new Error('Failed to fetch users');
+                throw new Error('Failed to fetch penalty history');
             }
 
-            const data = await response.json();
-            return data.data;
+            return await response.json();
         } catch (err) {
-            throw new Error('Failed to fetch users. Please try again.');
+            throw new Error('Failed to fetch penalty history. Please try again.');
         }
     },
 
-    deleteUser: async function(userId, token) {
+    fetchPenaltyPoints: async function(userId, token) {
         try {
-            const response = await fetch(`/api/users/${userId}`, {
-                method: 'DELETE',
+            const response = await fetch(`/api/loans/penalties/${userId}/points`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
             });
 
             if (!response.ok) {
-                throw new Error('Failed to delete user');
+                throw new Error('Failed to fetch penalty points');
             }
 
-            return true;
+            return await response.json();
         } catch (err) {
-            throw new Error('Failed to delete user. Please try again.');
-        }
-    },
-
-    addUser: async function(user, token) {
-        try {
-            const response = await fetch('/api/users', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(user),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to add user');
-            }
-
-            return true;
-        } catch (err) {
-            throw new Error('Failed to add user. Please try again.');
+            throw new Error('Failed to fetch penalty points. Please try again.');
         }
     }
 };
 
 // Make available globally
-window.Users = Users;
+window.Penalties = Penalties;

@@ -1,9 +1,8 @@
-export class ErrorMessage {
-    constructor(containerId) {
-        this.containerId = containerId;
-    }
-
-    show(message, type = 'danger') {
+// ErrorMessage
+function ErrorMessage(containerId) {
+    this.containerId = containerId;
+    
+    this.show = function(message, type = 'danger') {
         const container = document.getElementById(this.containerId);
         if (!container) return;
 
@@ -14,5 +13,7 @@ export class ErrorMessage {
         setTimeout(() => {
             container.style.display = 'none';
         }, 3000);
-    }
+    };
 }
+
+window.ErrorMessage = ErrorMessage;

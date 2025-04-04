@@ -33,7 +33,7 @@
                         <a class="nav-link" href="#user-management">User Management</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Profile</a>
+                        <a class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#profileOffcanvas" aria-controls="profileOffcanvas">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../Index.html" id="logout">Logout</a>
@@ -211,6 +211,78 @@
             </div>
         </div>
     </section>
+
+   <!-- Profile Sidebar -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="profileOffcanvas" aria-labelledby="profileOffcanvasLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="profileOffcanvasLabel">My Profile</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <!-- Profile content -->
+      <div class="text-center mb-4">
+        <div class="avatar-container mb-3">
+          <i class="fas fa-user-circle fa-5x text-primary"></i>
+        </div>
+        <h4 id="sidebar-profile-username">Administrator</h4>
+        <p class="badge bg-primary">Administrator</p>
+      </div>
+      
+      <!-- Profile alerts -->
+      <div id="profile-sidebar-alert" class="alert" style="display: none;"></div>
+      
+      <!-- Profile form -->
+      <form id="profile-sidebar-form">
+        <div class="mb-3">
+          <label for="sidebar-username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="sidebar-username" disabled>
+          <small class="text-muted">Username cannot be changed</small>
+        </div>
+  
+        <div class="mb-3">
+          <label for="sidebar-email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="sidebar-email" required>
+          <div class="invalid-feedback"></div>
+        </div>
+  
+        <div class="mb-3">
+          <label for="sidebar-fullName" class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="sidebar-fullName">
+        </div>
+  
+        <div class="mb-3">
+          <label for="sidebar-phone" class="form-label">Phone Number</label>
+          <input type="tel" class="form-control" id="sidebar-phone">
+        </div>
+  
+        <div class="mb-3">
+          <label for="sidebar-address" class="form-label">Address</label>
+          <textarea class="form-control" id="sidebar-address" rows="3"></textarea>
+        </div>
+  
+        <hr>
+        <h5>Change Password</h5>
+        <p class="text-muted small">Leave blank if you don't want to change your password</p>
+  
+        <div class="mb-3">
+          <label for="sidebar-password" class="form-label">New Password</label>
+          <input type="password" class="form-control" id="sidebar-password">
+          <div class="invalid-feedback"></div>
+          <small class="text-muted">Minimum 6 characters</small>
+        </div>
+  
+        <div class="mb-3">
+          <label for="sidebar-confirmPassword" class="form-label">Confirm New Password</label>
+          <input type="password" class="form-control" id="sidebar-confirmPassword">
+          <div class="invalid-feedback"></div>
+        </div>
+  
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary">Update Profile</button>
+        </div>
+      </form>
+    </div>
+  </div> 
 
     <!-- Footer -->
     <footer class="footer">

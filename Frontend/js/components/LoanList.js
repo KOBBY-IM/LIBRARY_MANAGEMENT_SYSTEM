@@ -7,6 +7,11 @@ function LoanList(containerId, loans, onReturnClick) {
         const container = document.getElementById(this.containerId);
         if (!container) return;
 
+        if (!this.loans || this.loans.length === 0) {
+            container.innerHTML = '<tr><td colspan="6" class="text-center">No active loans</td></tr>';
+            return;
+        }
+
         container.innerHTML = this.loans.map(loan => `
             <tr ${loan.is_overdue ? 'class="table-danger"' : loan.days_remaining <= 2 ? 'class="table-warning"' : ''}>
                 <td>${loan.title}</td>
@@ -24,13 +29,21 @@ function LoanList(containerId, loans, onReturnClick) {
             </tr>
         `).join('');
 
-        // Attach event listeners to return buttons
+        // Attach event listeners to return buttons WITHOUT confirmation dialog
         const self = this;
         container.querySelectorAll('.return-btn').forEach(button => {
-            button.addEventListener('click', self.onReturnClick);
+            button.addEventListener('click', function() {
+                const loanId = this.dataset.id;
+                
+                // Show processing state
+                this.disabled = true;
+                this.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Returning...';
+                
+                // Call the handler directly without confirmation
+                self.onReturnClick(loanId);
+            });
         });
     };
 }
-
 
 window.LoanList = LoanList;

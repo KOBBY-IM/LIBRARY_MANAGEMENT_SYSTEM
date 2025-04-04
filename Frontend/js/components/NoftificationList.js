@@ -8,6 +8,11 @@ function NotificationList(containerId, notifications, onMarkAsReadClick, onRenew
         const container = document.getElementById(this.containerId);
         if (!container) return;
 
+        if (!this.notifications || this.notifications.length === 0) {
+            container.innerHTML = '<div class="alert alert-info">No notifications</div>';
+            return;
+        }
+
         container.innerHTML = this.notifications.map(notification => `
             <div class="notification-item ${notification.read ? '' : 'unread'}" data-id="${notification.id}">
                 <div class="notification-icon">
@@ -25,14 +30,32 @@ function NotificationList(containerId, notifications, onMarkAsReadClick, onRenew
             </div>
         `).join('');
 
-        // Attach event listeners
+        // Attach event listeners - without any confirm dialogs
         const self = this;
         container.querySelectorAll('.mark-read-btn').forEach(button => {
-            button.addEventListener('click', self.onMarkAsReadClick);
+            button.addEventListener('click', function() {
+                const notificationId = this.dataset.id;
+                
+                // Show processing state
+                this.disabled = true;
+                this.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                
+                // Call handler directly
+                self.onMarkAsReadClick(notificationId);
+            });
         });
 
         container.querySelectorAll('.renew-btn').forEach(button => {
-            button.addEventListener('click', self.onRenewClick);
+            button.addEventListener('click', function() {
+                const loanId = this.dataset.loanId;
+                
+                // Show processing state
+                this.disabled = true;
+                this.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Renewing...';
+                
+                // Call handler directly
+                self.onRenewClick(loanId);
+            });
         });
     };
 
@@ -52,6 +75,8 @@ function NotificationList(containerId, notifications, onMarkAsReadClick, onRenew
     };
 
     this.formatNotificationTime = function(timestamp) {
+        if (!timestamp) return "Unknown";
+        
         const date = new Date(timestamp);
         const now = new Date();
         const diffTime = Math.abs(now - date);

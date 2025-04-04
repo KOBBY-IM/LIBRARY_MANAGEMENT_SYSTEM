@@ -76,19 +76,24 @@ const borrowBook = async (req, res) => {
         if (userRecord.length > 0 && userRecord[0].quarterly_penalty_points !== null) {
             penaltyPoints = userRecord[0].quarterly_penalty_points;
             
-            // Apply penalty based on accumulated quarterly points
-            if (penaltyPoints >= 6) {
-                maxLoans = 3; // Severe penalty: only 3 books allowed
+            // Apply penalty based only on accumulated quarterly points with updated thresholds
+            if (penaltyPoints >= 20) {
+                maxLoans = 0; // Borrowing blocked: Cannot borrow any books
+                penaltyMessage = `Borrowing privileges suspended: You have ${penaltyPoints} penalty points this quarter (${quarterInfo.quarterLabel}). Please speak with a librarian.`;
+            } else if (penaltyPoints >= 13) {
+                maxLoans = 4; // Severe penalty: reduce by 6 books (10-6=4)
                 penaltyMessage = `Severe penalty applied: You have ${penaltyPoints} penalty points this quarter (${quarterInfo.quarterLabel}).`;
-            } else if (penaltyPoints >= 4) {
-                maxLoans = 5; // Moderate penalty: only 5 books allowed
+            } else if (penaltyPoints >= 9) {
+                maxLoans = 6; // Moderate penalty: reduce by 4 books (10-4=6)
                 penaltyMessage = `Moderate penalty applied: You have ${penaltyPoints} penalty points this quarter (${quarterInfo.quarterLabel}).`;
-            } else if (penaltyPoints >= 2) {
-                maxLoans = 7; // Mild penalty: 7 books allowed
+            } else if (penaltyPoints >= 5) {
+                maxLoans = 8; // Mild penalty: reduce by 2 books (10-2=8)
                 penaltyMessage = `Mild penalty applied: You have ${penaltyPoints} penalty points this quarter (${quarterInfo.quarterLabel}).`;
             }
+            // No penalty for 0-4 points (maxLoans remains 10)
         } else {
-            // Fallback to original overdue books check if quarterly points aren't available
+            // Handle case where quarterly_penalty_points is not available
+            // Check overdue books and update quarterly points
             const [overdueLoans] = await connection.query(
                 'SELECT COUNT(*) AS count FROM loans WHERE user_id = ? AND due_date < CURDATE() AND returned = FALSE AND borrow_date >= ? AND borrow_date <= ?',
                 [userId, quarterInfo.quarterStart, quarterInfo.quarterEnd]
@@ -100,15 +105,19 @@ const borrowBook = async (req, res) => {
                 // Apply penalty points based on overdue count
                 penaltyPoints = overdueCount * 2; // 2 points per overdue book
                 
-                if (overdueCount >= 3) {
-                    maxLoans = 3; // Severe penalty: only 3 books allowed
-                    penaltyMessage = `Severe penalty applied: You have 3 or more overdue books this quarter (${quarterInfo.quarterLabel}). Penalty points: ${penaltyPoints}`;
-                } else if (overdueCount === 2) {
-                    maxLoans = 5; // Moderate penalty: only 5 books allowed
-                    penaltyMessage = `Moderate penalty applied: You have 2 overdue books this quarter (${quarterInfo.quarterLabel}). Penalty points: ${penaltyPoints}`;
-                } else {
-                    maxLoans = 7; // Mild penalty: 7 books allowed
-                    penaltyMessage = `Mild penalty applied: You have 1 overdue book this quarter (${quarterInfo.quarterLabel}). Penalty points: ${penaltyPoints}`;
+                // Apply the same penalty point logic as above
+                if (penaltyPoints >= 20) {
+                    maxLoans = 0;
+                    penaltyMessage = `Borrowing privileges suspended: You have ${penaltyPoints} penalty points this quarter (${quarterInfo.quarterLabel}). Please speak with a librarian.`;
+                } else if (penaltyPoints >= 13) {
+                    maxLoans = 4;
+                    penaltyMessage = `Severe penalty applied: You have ${penaltyPoints} penalty points this quarter (${quarterInfo.quarterLabel}).`;
+                } else if (penaltyPoints >= 9) {
+                    maxLoans = 6;
+                    penaltyMessage = `Moderate penalty applied: You have ${penaltyPoints} penalty points this quarter (${quarterInfo.quarterLabel}).`;
+                } else if (penaltyPoints >= 5) {
+                    maxLoans = 8;
+                    penaltyMessage = `Mild penalty applied: You have ${penaltyPoints} penalty points this quarter (${quarterInfo.quarterLabel}).`;
                 }
                 
                 // Record quarterly penalty points
@@ -125,6 +134,15 @@ const borrowBook = async (req, res) => {
         }
         
         console.log("Max loans allowed:", maxLoans);
+
+        // FIXED ORDER: First check if borrowing is suspended (maxLoans = 0)
+        if (maxLoans === 0) {
+            await connection.rollback();
+            return res.status(400).json({
+                success: false,
+                message: penaltyMessage
+            });
+        }
 
         // Check if the user has already borrowed the maximum number of books
         const [loans] = await connection.query(
@@ -334,42 +352,33 @@ const getUserLoans = async (req, res) => {
             [userId]
         );
         
-        // Get penalty status info for current quarter
-        const [overdueLoans] = await pool.query(
-            'SELECT COUNT(*) AS count FROM loans WHERE user_id = ? AND due_date < CURDATE() AND returned = FALSE AND borrow_date >= ? AND borrow_date <= ?',
-            [userId, quarterInfo.quarterStart, quarterInfo.quarterEnd]
-        );
-        
-        const overdueCount = overdueLoans[0].count;
-        let maxLoans = 10; // Increased default max loans to 10
-        
-        // Calculate max loans based on quarterly penalty
-        if (overdueCount >= 3) {
-            maxLoans = 3;
-        } else if (overdueCount === 2) {
-            maxLoans = 5;
-        } else if (overdueCount === 1) {
-            maxLoans = 7;
-        }
-        
-        // Get current active loans count
-        const [activeLoans] = await pool.query(
-            'SELECT COUNT(*) AS count FROM loans WHERE user_id = ? AND returned = FALSE',
-            [userId]
-        );
-        
         // Get user's quarterly penalty points
         let quarterlyPenaltyPoints = 0;
         let lastPenaltyQuarter = '';
+        let maxLoans = 10; // Default maximum loans
+        
         try {
             const [userPenalty] = await pool.query(
                 'SELECT quarterly_penalty_points, last_penalty_quarter FROM users WHERE id = ?',
                 [userId]
             );
+            
             if (userPenalty.length > 0) {
                 if (userPenalty[0].quarterly_penalty_points) {
                     quarterlyPenaltyPoints = userPenalty[0].quarterly_penalty_points;
+                    
+                    // Apply the updated penalty point tiers
+                    if (quarterlyPenaltyPoints >= 20) {
+                        maxLoans = 0; // Borrowing blocked
+                    } else if (quarterlyPenaltyPoints >= 13) {
+                        maxLoans = 4;
+                    } else if (quarterlyPenaltyPoints >= 9) {
+                        maxLoans = 6;
+                    } else if (quarterlyPenaltyPoints >= 5) {
+                        maxLoans = 8;
+                    }
                 }
+                
                 if (userPenalty[0].last_penalty_quarter) {
                     lastPenaltyQuarter = userPenalty[0].last_penalty_quarter;
                 }
@@ -378,18 +387,33 @@ const getUserLoans = async (req, res) => {
             console.log("Could not fetch quarterly penalty points, columns might not exist:", err);
         }
         
+        // Get current active loans count
+        const [activeLoans] = await pool.query(
+            'SELECT COUNT(*) AS count FROM loans WHERE user_id = ? AND returned = FALSE',
+            [userId]
+        );
+        
+        // Determine penalty level based on points
+        let penaltyLevel = 'None';
+        if (quarterlyPenaltyPoints >= 20) {
+            penaltyLevel = 'Borrowing Suspended';
+        } else if (quarterlyPenaltyPoints >= 13) {
+            penaltyLevel = 'Severe';
+        } else if (quarterlyPenaltyPoints >= 9) {
+            penaltyLevel = 'Moderate';
+        } else if (quarterlyPenaltyPoints >= 5) {
+            penaltyLevel = 'Mild';
+        }
+        
         res.json({ 
             success: true, 
             data: loans,
             penaltyInfo: {
                 currentQuarter: quarterInfo.quarterLabel,
-                overdueBooks: overdueCount,
                 maxLoansAllowed: maxLoans,
                 currentLoans: activeLoans[0].count,
-                borrowingStatus: maxLoans > activeLoans[0].count ? 'Can Borrow' : 'Limit Reached',
-                penaltyLevel: overdueCount === 0 ? 'None' : 
-                             overdueCount === 1 ? 'Mild' :
-                             overdueCount === 2 ? 'Moderate' : 'Severe',
+                borrowingStatus: maxLoans > activeLoans[0].count && maxLoans > 0 ? 'Can Borrow' : 'Limit Reached',
+                penaltyLevel: penaltyLevel,
                 quarterlyPenaltyPoints: quarterlyPenaltyPoints,
                 lastPenaltyQuarter: lastPenaltyQuarter
             }
