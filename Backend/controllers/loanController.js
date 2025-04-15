@@ -37,6 +37,20 @@ const getCurrentQuarterInfo = () => {
     };
 };
 
+// Helper function to create a message
+const createMessage = async (connection, userId, type, title, content, loanId) => {
+    try {
+        await connection.query(
+            'INSERT INTO messages (user_id, type, title, content, loan_id, created_at) VALUES (?, ?, ?, ?, ?, NOW())',
+            [userId, type, title, content, loanId]
+        );
+    } catch (err) {
+        console.error("Error creating message:", err);
+        // Continue even if message creation fails
+    }
+};
+
+// Borrow a book
 const borrowBook = async (req, res) => {
     const { userId, bookId } = req.body;
     console.log("Request Body:", req.body);
@@ -159,8 +173,22 @@ const borrowBook = async (req, res) => {
             });
         }
 
+        // NEW CHECK: Check if the user already has an active loan for this book
+        const [existingLoan] = await connection.query(
+            'SELECT id FROM loans WHERE user_id = ? AND book_id = ? AND returned = FALSE',
+            [userId, bookId]
+        );
+        
+        if (existingLoan.length > 0) {
+            await connection.rollback();
+            return res.status(400).json({
+                success: false,
+                message: 'You already have an active loan for this book. You cannot borrow multiple copies of the same book.'
+            });
+        }
+
         // Check if the book is available
-        const [book] = await connection.query('SELECT quantity FROM books WHERE id = ?', [bookId]);
+        const [book] = await connection.query('SELECT title, quantity FROM books WHERE id = ?', [bookId]);
         console.log("Book availability check:", book);
         
         if (!book.length || book[0].quantity < 1) {
@@ -181,6 +209,16 @@ const borrowBook = async (req, res) => {
             [userId, bookId, dueDate, quarterInfo.quarterLabel]
         );
         console.log("Loan created:", result);
+
+        // Create borrow success message
+        await createMessage(
+            connection,
+            userId,
+            'borrow_success',
+            `Successfully borrowed "${book[0].title}"`,
+            `You have borrowed "${book[0].title}". The due date is ${dueDate.toLocaleDateString()}. Please return it before the due date to avoid penalties.`,
+            result.insertId
+        );
 
         await connection.commit();
         console.log("Transaction committed");
@@ -299,6 +337,28 @@ const returnBook = async (req, res) => {
             'UPDATE books SET quantity = quantity + 1 WHERE id = ?', 
             [loanCheck[0].book_id]
         );
+
+        // Create return success message
+        await createMessage(
+            connection,
+            loanCheck[0].user_id,
+            'return_success',
+            `Successfully returned "${loanCheck[0].title}"`,
+            `You have returned "${loanCheck[0].title}" successfully.${isOverdue ? ` Book was ${overdueDays} day(s) overdue.` : ''}`,
+            loanId
+        );
+
+        // If there was a penalty, add a separate penalty message
+        if (isOverdue && penaltyPoints > 0) {
+            await createMessage(
+                connection,
+                loanCheck[0].user_id,
+                'penalty',
+                `Penalty points added: ${penaltyPoints}`,
+                `You received ${penaltyPoints} penalty points for returning "${loanCheck[0].title}" ${overdueDays} day(s) late. These points affect your borrowing limit this quarter (${quarterInfo.quarterLabel}).`,
+                loanId
+            );
+        }
 
         await connection.commit();
         
@@ -534,10 +594,89 @@ const resetQuarterlyPenalties = async (req, res) => {
     }
 };
 
+// Get all loans with user and book details (for admin)
+const getAllLoans = async (req, res) => {
+    try {
+        // Get query parameters for optional filtering
+        const { status, search } = req.query;
+        
+        // Base query with JOINs to get user and book information
+        let query = `
+            SELECT l.id, l.borrow_date, l.due_date, l.return_date, l.returned, l.quarter,
+                   b.id as book_id, b.title as book_title, b.author as book_author, b.isbn,
+                   u.id as user_id, u.username, u.email, u.department,
+                   DATEDIFF(l.due_date, CURDATE()) as days_remaining,
+                   CASE 
+                       WHEN l.due_date < CURDATE() AND l.returned = FALSE THEN TRUE 
+                       ELSE FALSE 
+                   END as is_overdue
+            FROM loans l
+            JOIN books b ON l.book_id = b.id
+            JOIN users u ON l.user_id = u.id
+        `;
+
+        // Add WHERE conditions based on filters
+        let whereConditions = [];
+        let params = [];
+
+        if (status === 'active') {
+            whereConditions.push('l.returned = FALSE');
+        } else if (status === 'returned') {
+            whereConditions.push('l.returned = TRUE');
+        } else if (status === 'overdue') {
+            whereConditions.push('l.returned = FALSE AND l.due_date < CURDATE()');
+        }
+
+        if (search) {
+            whereConditions.push('(b.title LIKE ? OR b.author LIKE ? OR u.username LIKE ? OR u.email LIKE ?)');
+            const searchParam = `%${search}%`;
+            params.push(searchParam, searchParam, searchParam, searchParam);
+        }
+
+        // Add WHERE clause if needed
+        if (whereConditions.length > 0) {
+            query += ' WHERE ' + whereConditions.join(' AND ');
+        }
+
+        // Add ordering to show most recent loans first and overdue ones at the top
+        query += ' ORDER BY l.returned ASC, is_overdue DESC, l.borrow_date DESC';
+        
+        // Execute query
+        const [loans] = await pool.query(query, params);
+        
+        // Get some statistics
+        const [stats] = await pool.query(`
+            SELECT 
+                COUNT(*) as total_loans,
+                SUM(CASE WHEN returned = FALSE THEN 1 ELSE 0 END) as active_loans,
+                SUM(CASE WHEN returned = FALSE AND due_date < CURDATE() THEN 1 ELSE 0 END) as overdue_loans
+            FROM loans
+        `);
+        
+        // Return the loans with statistics
+        res.json({ 
+            success: true, 
+            data: loans,
+            stats: stats[0],
+            filters: {
+                status: status || 'all',
+                search: search || ''
+            }
+        });
+    } catch (err) {
+        console.error("Error in getAllLoans:", err);
+        res.status(500).json({ 
+            success: false, 
+            message: err.message 
+        });
+    }
+};
+
 module.exports = { 
     borrowBook, 
     returnBook, 
     getUserLoans, 
     getUserPenaltyHistory,
-    resetQuarterlyPenalties 
+    resetQuarterlyPenalties,
+    getAllLoans 
 };

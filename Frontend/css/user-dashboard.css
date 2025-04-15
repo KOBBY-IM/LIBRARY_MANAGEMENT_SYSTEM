@@ -527,3 +527,328 @@ body {
         top: 0;
     }
 }
+
+/* Book cover */
+.book-cover {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.book-cover img {
+    max-height: 180px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.placeholder-image {
+    width: 50px;
+    height: 75px;
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #666;
+    border-radius: 2px;
+}
+
+/* Message Section Styles */
+.message-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.message-item {
+    display: flex;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    align-items: flex-start;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.message-item:hover {
+    background-color: #f9f9f9;
+}
+
+.message-icon {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-right: 1rem;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(66, 133, 244, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.message-content {
+    flex-grow: 1;
+}
+
+.message-content h5 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.message-content p {
+    font-size: 0.9rem;
+    color: var(--gray-color);
+    margin-bottom: 0.25rem;
+}
+
+.message-time {
+    font-size: 0.8rem;
+    color: #999;
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.message-actions {
+    margin-left: 1rem;
+    flex-shrink: 0;
+}
+
+/* Message types styling */
+.message-item[data-type="due_soon"] .message-icon {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107; /* warning */
+}
+
+.message-item[data-type="overdue"] .message-icon {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545; /* danger */
+}
+
+.message-item[data-type="borrow_success"] .message-icon,
+.message-item[data-type="return_success"] .message-icon {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745; /* success */
+}
+
+.message-item[data-type="penalty"] .message-icon {
+    background-color: rgba(108, 117, 125, 0.1);
+    color: #6c757d; /* secondary */
+}
+
+/* Empty state styling */
+.message-list .alert {
+    margin: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .message-item {
+        flex-wrap: wrap;
+    }
+    
+    .message-actions {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+}
+
+/* Unread message styling */
+.message-item.unread {
+    background-color: rgba(66, 133, 244, 0.05);
+    border-left: 3px solid var(--secondary-color);
+}
+
+.message-item.unread:hover {
+    background-color: rgba(66, 133, 244, 0.1);
+    cursor: pointer;
+}
+
+/* Unread message icon with indicator */
+.message-item.unread .message-icon::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #dc3545;
+    border: 3px solid white;
+}
+
+/* Make sure the message icon container is positioned relatively */
+.message-item .message-icon {
+    position: relative;
+}
+
+/* Adjust badge for unread count */
+#message-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    font-size: 0.75rem;
+}
+
+/* Style for read messages - grayed out appearance */
+.message-item:not(.unread) {
+    opacity: 0.7;
+    background-color: #f8f8f8;
+    border-left: 3px solid #e0e0e0;
+}
+
+.message-item:not(.unread):hover {
+    opacity: 0.9;
+    background-color: #f1f1f1;
+}
+
+/* Message content grayed out for read messages */
+.message-item:not(.unread) .message-content h5 {
+    color: #666;
+}
+
+.message-item:not(.unread) .message-content p {
+    color: #777;
+}
+
+.message-item:not(.unread) .message-icon {
+    opacity: 0.6;
+}
+
+/* Make unread messages stand out more by comparison */
+.message-item.unread {
+    background-color: #fff;
+    border-left: 3px solid var(--secondary-color);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.message-item.unread .message-content h5 {
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+/* Transition effect when changing from unread to read */
+.message-item {
+    transition: all 0.3s ease-out;
+}
+
+/* Fix for navigation bar layout issue */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  flex: 1 0 auto;
+}
+
+.footer {
+  flex-shrink: 0;
+  margin-top: 2rem; /* Add spacing between content and footer */
+}
+
+/* Improved message list styling for better user experience */
+.message-item {
+  position: relative;
+  transition: all 0.3s ease-out;
+  overflow: hidden;
+}
+
+/* Animation for message actions */
+.message-item .delete-btn {
+  transition: all 0.2s ease;
+}
+
+.message-item .delete-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Better visual distinction between read/unread messages */
+.message-item.unread {
+  background-color: rgb(240, 249, 255);
+  border-left: 3px solid var(--secondary-color);
+}
+
+.message-item:not(.unread) {
+  opacity: 0.85;
+  background-color: #f8f8f8;
+  border-left: 3px solid #e0e0e0;
+}
+
+.message-item:hover {
+  opacity: 1 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Improve message badge visibility */
+#message-badge, .sidebar-link .badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+/* Make sure content sections don't extend to footer */
+.content-section {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
+
+/* Set a fixed height for message list with overflow scrolling */
+.message-list {
+  max-height: 550px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* Add animations for message actions */
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes highlightRead {
+  0% { background-color: #e9f5ff; }
+  100% { background-color: transparent; }
+}
+
+.message-deleted {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+.message-read {
+  animation: highlightRead 1s ease forwards;
+}
+
+/* Optimize scrollbar appearance */
+.message-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.message-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.message-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+.message-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

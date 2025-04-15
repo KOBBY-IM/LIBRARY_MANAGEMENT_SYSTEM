@@ -4,14 +4,25 @@
     --secondary-color: #4285f4;     /* Light blue for accents */
     --dark-color: #1e293b;          /* Dark blue for text */
     --white-color: #ffffff;         /* White for backgrounds and text */
+    --light-color: #f4f6f9;         /* Light background color */
 }
 
-/* General body styling */
+/* General body styling with increased font size */
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--light-color);
     margin: 0;
     padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    font-size: 16px; /* Base font size increased */
+}
+
+/* Container with REDUCED side margins */
+.container {
+    max-width: 1400px; /* Increased from default Bootstrap */
+    width: 96%; /* Take up more of the screen width */
+    padding: 0 10px; /* Reduced padding */
+    margin: 0 auto;
 }
 
 /* Navbar Styling */
@@ -27,6 +38,7 @@ body {
     gap: 0.5rem;
     font-weight: 600;
     color: var(--primary-color);
+    font-size: 1.25rem; /* Slightly larger brand text */
 }
 
 .navbar-brand img {
@@ -39,6 +51,7 @@ body {
     font-weight: 500;
     margin: 0 0.5rem;
     position: relative;
+    font-size: 1.05rem; /* Slightly larger nav links */
 }
 
 .nav-link:hover {
@@ -79,13 +92,13 @@ body {
 }
 
 .hero-title {
-    font-size: 2.5rem; 
+    font-size: 2.6rem; /* Increased from 2.5rem */
     margin-bottom: 1.5rem;
     letter-spacing: -0.5px;
 }
 
 .hero-subtitle {
-    font-size: 1.2rem; 
+    font-size: 1.3rem; /* Increased from 1.2rem */
     font-weight: 300;
     margin-bottom: 2rem;
     opacity: 0.9;
@@ -142,6 +155,7 @@ body {
 .form-header h3 {
     margin-bottom: 0;
     font-weight: 600;
+    font-size: 1.6rem; /* Increased font size */
 }
 
 .form-body {
@@ -153,7 +167,7 @@ body {
     border-radius: 5px;
     margin-bottom: 1.5rem;
     border: 1px solid #e2e8f0;
-    font-size: 1rem;
+    font-size: 1.05rem; /* Increased from 1rem */
 }
 
 .form-control:focus, .form-select:focus {
@@ -165,13 +179,14 @@ body {
     font-weight: 500;
     color: var(--dark-color);
     margin-bottom: 0.5rem;
+    font-size: 1.05rem; /* Increased font size */
 }
 
 .register-btn {
     background-color: var(--secondary-color);
     border-color: var(--secondary-color);
     padding: 0.8rem 0;
-    font-size: 1rem;
+    font-size: 1.05rem; /* Increased font size */
     font-weight: 500;
     border-radius: 5px;
     width: 100%;
@@ -192,7 +207,7 @@ body {
 }
 
 .footer-title {
-    font-size: 1.2rem;
+    font-size: 1.3rem; /* Increased from 1.2rem */
     font-weight: 600;
     margin-bottom: 1.5rem;
     position: relative;
@@ -216,6 +231,7 @@ body {
 
 .footer-links li {
     margin-bottom: 0.8rem;
+    font-size: 1.05rem; /* Increased font size */
 }
 
 .footer-links a {
@@ -234,6 +250,7 @@ body {
     align-items: flex-start;
     margin-bottom: 1rem;
     color: rgba(255, 255, 255, 0.8);
+    font-size: 1.05rem; /* Increased font size */
 }
 
 .footer-contact i {
@@ -244,15 +261,28 @@ body {
 
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1.
+    padding: 1.5rem 0;
+    text-align: center;
+    font-size: 1.05rem; /* Increased font size */
 }
 
 /* Admin Dashboard Styles */
+#book-management, #user-management, #active-loans {
+    padding: 1rem 0.5rem; /* Reduced horizontal padding */
+}
+
+/* Row margin adjustment for admin sections */
+#book-management .row,
+#user-management .row {
+    margin-left: -5px;
+    margin-right: -5px;
+}
+
 .section-title {
-    font-size: 2rem;
+    font-size: 1.9rem; /* Increased from 1.8rem */
     font-weight: 600;
     color: var(--primary-color);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     position: relative;
 }
 
@@ -270,32 +300,42 @@ body {
     border: none;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
 }
 
 .card-header {
     background-color: var(--primary-color);
     color: var(--white-color);
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 10px 10px 0 0;
 }
 
 .card-header h5 {
     margin-bottom: 0;
     font-weight: 600;
+    font-size: 1.2rem; /* Increased from 1.1rem */
+}
+
+.card-body {
+    padding: 0.75rem;
 }
 
 .table {
     margin-bottom: 0;
+    width: 100%;
 }
 
 .table th {
     background-color: var(--primary-color);
     color: var(--white-color);
+    white-space: nowrap;
+    font-size: 1.05rem; /* Increased font size */
 }
 
-.table td, .table th {
-    padding: 1rem;
+.table td {
+    padding: 0.6rem 0.75rem;
     vertical-align: middle;
+    font-size: 1rem; /* Increased from 0.9rem */
 }
 
 .btn-warning {
@@ -318,184 +358,201 @@ body {
     border-color: #c82333;
 }
 
-
-/* User Dashboard Styles */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f4f6f9;
-    margin: 0;
-    padding: 0;
-}
-
-.navbar {
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    padding: 0.8rem 0;
-}
-
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 600;
-    color: #1a3a5f;
-}
-
-.navbar-brand img {
-    width: 80px;
-    height: auto;
-}
-
-.navbar .nav-link {
-    color: #1e293b;
-    font-weight: 500;
-    margin: 0 0.5rem;
-    position: relative;
-}
-
-.navbar .nav-link:hover {
-    color: #4285f4;
-}
-
-.navbar .nav-link::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -3px;
-    left: 50%;
-    background-color: #4285f4;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-}
-
-.navbar .nav-link:hover::after {
-    width: 100%;
-}
-
-.section-title {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #1a3a5f;
-    margin-bottom: 1rem;
-}
-
-#search-bar {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-#book-list {
+/* TARGETED OPTIMIZATION FOR BOOK AND USER MANAGEMENT */
+/* Adjust the grid for admin sections to give more space to tables */
+#book-management .row,
+#user-management .row {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
 }
 
-.book-card {
-    background: white;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 250px;
+/* Make the form column narrower */
+#book-management .col-md-6:first-child,
+#user-management .col-md-6:first-child {
+    flex: 0 0 auto;
+    width: 38%; /* Narrower form column */
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
-.book-card h5 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #1a3a5f;
+/* Make the table column wider */
+#book-management .col-md-6:last-child,
+#user-management .col-md-6:last-child {
+    flex: 0 0 auto;
+    width: 62%; /* Wider table column */
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
-.book-card p {
-    font-size: 0.9rem;
-    color: #666;
+/* Make the book form card height match the book list container */
+#book-management .col-md-6:first-child .card {
+    height: calc(100% - 1rem); /* Account for the margin-bottom */
 }
 
-.book-card .btn {
-    background-color: #4285f4;
-    color: white;
-    font-weight: 500;
-    padding: 0.5rem;
-    border-radius: 5px;
-    width: 100%;
-    text-align: center;
+/* Make the form body take full height */
+#book-management .col-md-6:first-child .card-body {
+    height: calc(100% - 60px); /* Subtract header height */
+    overflow: hidden; /* Hide overflow */
 }
 
-.book-card .btn:hover {
-    background-color: #3367d6;
+#addBookForm {
+    height: 550px; /* Set height to match scrollable table */
+    overflow-y: auto; /* Allow scrolling if needed */
+    padding-right: 10px; /* Space for scrollbar */
 }
 
-.table th, .table td {
-    text-align: center;
-    padding: 1rem;
-}
-
-.table th {
-    background-color: #1a3a5f;
-    color: white;
-}
-
-.footer {
-    background-color: #1a3a5f;
-    color: white;
-    padding: 1.5rem 0;
-    text-align: center;
-}
-
-/* Prevent horizontal scrolling */
-body {
-    overflow-x: hidden;
-}
-
-/* Make tables responsive without overflow */
-.scrollable-table-container {
-    max-height: 600px;
+/* Book List Table Styling - Specifically target the book list table */
+#book-management .scrollable-table-container,
+#user-management .scrollable-table-container {
+    max-height: 620px;
     overflow-y: auto;
-    overflow-x: hidden; /* Prevents horizontal scrolling */
+    overflow-x: hidden;
     border: 1px solid #ddd;
-    padding: 10px;
     border-radius: 6px;
     width: 100%;
 }
 
-/* Ensure the table fits within the parent container */
-.table {
-    table-layout: fixed;
-    width: 100%;
-    word-wrap: break-word;
+/* Table column widths for the book list table */
+#bookList th:nth-child(1),
+#bookList td:nth-child(1) {
+    width: 60px; /* Cover column */
+}
+
+#bookList th:nth-child(2),
+#bookList td:nth-child(2) {
+    width: 23%; /* Title column - slightly reduced */
+}
+
+#bookList th:nth-child(3),
+#bookList td:nth-child(3) {
+    width: 15%; /* Author column */
+}
+
+#bookList th:nth-child(4),
+#bookList td:nth-child(4) {
+    width: 15%; /* ISBN column */
+}
+
+#bookList th:nth-child(5),
+#bookList td:nth-child(5) {
+    width: 20%; /* Genre column - INCREASED */
+}
+
+#bookList th:nth-child(6),
+#bookList td:nth-child(6) {
+    width: 8%; /* Quantity column */
+}
+
+#bookList th:nth-child(7),
+#bookList td:nth-child(7) {
+    width: 110px; /* Actions column */
+}
+
+/* User table column widths */
+#userList th:nth-child(1),
+#userList td:nth-child(1) {
+    width: 25%; /* Name column */
+}
+
+#userList th:nth-child(2),
+#userList td:nth-child(2) {
+    width: 35%; /* Email column - wider */
+}
+
+#userList th:nth-child(3),
+#userList td:nth-child(3) {
+    width: 20%; /* Role column */
+}
+
+#userList th:nth-child(4),
+#userList td:nth-child(4) {
+    width: 110px; /* Actions column */
+}
+
+/* Make sure text wraps properly */
+.table td {
+    word-break: break-word;
 }
 
 /* Space out action buttons */
 .table td .btn {
-    margin-right: 5px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    display: inline-block;
+    font-size: 0.95rem; /* Increased button font size */
 }
 
-
-/* Optional: Style the scrollbar */
-.scrollable-table-container::-webkit-scrollbar {
-    width: 12px;
+/* REDUCE FONT SIZE FOR ACTION BUTTONS IN BOOK LIST */
+#bookList .btn {
+    font-size: 0.82rem; /* Reduced font size for action buttons */
+    padding: 0.25rem 0.5rem; /* Reduced padding for smaller buttons */
 }
 
-.scrollable-table-container::-webkit-scrollbar-thumb {
+/* Book cover image styling */
+.table td img {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+
+/* Placeholder for missing covers */
+.placeholder-image {
+    width: 50px;
+    height: 70px;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #6c757d;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+/* Style the scrollbar */
+.scrollable-table-container::-webkit-scrollbar,
+#addBookForm::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrollable-table-container::-webkit-scrollbar-thumb,
+#addBookForm::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 4px;
 }
 
-.scrollable-table-container::-webkit-scrollbar-track {
+.scrollable-table-container::-webkit-scrollbar-track,
+#addBookForm::-webkit-scrollbar-track {
     background-color: #f1f1f1;
+}
+
+/* Optimize search inputs */
+#bookSearch, #userSearch, #loan-search {
+    margin-bottom: 10px;
+    font-size: 1rem; /* Increased from 0.9rem */
+    padding: 0.4rem 0.75rem;
+}
+
+/* Adjust add book form to fit narrower column */
+#addBookForm .form-control,
+#addUserForm .form-control,
+#addBookForm .form-select,
+#addUserForm .form-select {
+    padding: 0.7rem;
+    margin-bottom: 0.8rem; /* Slightly reduced margin for more compact form */
+    font-size: 1rem; /* Ensure font size is consistent */
 }
 
 /* Profile offcanvas */
 #profileOffcanvas {
-    width: 400px; /* Fixed width for desktop */
+    width: 380px;
     border-left: 1px solid rgba(0,0,0,0.1);
     box-shadow: -5px 0 15px rgba(0,0,0,0.05);
-  }
+}
   
-  /* Avatar styling */
-  .avatar-container {
+/* Avatar styling */
+.avatar-container {
     width: 100px;
     height: 100px;
     margin: 0 auto;
@@ -503,43 +560,111 @@ body {
     align-items: center;
     justify-content: center;
     color: var(--primary-color);
-  }
+}
   
-  /* Form validation styling */
-  #profileOffcanvas .form-control.is-valid {
+/* Form validation styling */
+#profileOffcanvas .form-control.is-valid {
     border-color: #198754;
     padding-right: calc(1.5em + 0.75rem);
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right calc(0.375em + 0.1875rem) center;
     background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-  }
+}
   
-  #profileOffcanvas .form-control.is-invalid {
+#profileOffcanvas .form-control.is-invalid {
     border-color: #dc3545;
     padding-right: calc(1.5em + 0.75rem);
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right calc(0.375em + 0.1875rem) center;
     background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-  }
+}
   
-  #profileOffcanvas .invalid-feedback {
+#profileOffcanvas .invalid-feedback {
     display: none;
     width: 100%;
     margin-top: 0.25rem;
-    font-size: 0.875em;
+    font-size: 0.95rem; /* Increased font size */
     color: #dc3545;
-  }
+}
   
-  /* Profile link styling */
-  .profile-link, a[href="#profile"], #profile-link {
+/* Profile link styling */
+.profile-link, a[href="#profile"], #profile-link {
     cursor: pointer;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 576px) {
-    #profileOffcanvas {
-      width: 300px;
+}
+
+/* Optimize for mobile and responsive behavior */
+@media (max-width: 1200px) {
+    /* Special handling for larger tables on medium screens */
+    .table th:nth-child(1),
+    .table td:nth-child(1) {
+        width: 55px; 
     }
-  }
+    
+    #bookList th:nth-child(4),
+    #bookList td:nth-child(4) {
+        width: 12%;
+    }
+    
+    #bookList th:nth-child(5),
+    #bookList td:nth-child(5) {
+        width: 18%; /* Still wider but adjusted for screen size */
+    }
+}
+
+@media (max-width: 992px) {
+    /* Reset form/table columns to full width on smaller screens */
+    #book-management .col-md-6:first-child,
+    #user-management .col-md-6:first-child,
+    #book-management .col-md-6:last-child,
+    #user-management .col-md-6:last-child {
+        width: 100%; /* Full width on smaller screens */
+    }
+    
+    #bookList th:nth-child(4),
+    #bookList td:nth-child(4) {
+        display: none; /* Hide ISBN on smaller screens */
+    }
+    
+    #bookList th:nth-child(2),
+    #bookList td:nth-child(2) {
+        width: 30%; /* Increase title width */
+    }
+    
+    #bookList th:nth-child(5),
+    #bookList td:nth-child(5) {
+        width: 25%; /* Keep genre wide on medium screens */
+    }
+    
+    /* Reset form height on mobile since they're stacked */
+    #book-management .col-md-6:first-child .card,
+    #book-management .col-md-6:first-child .card-body {
+        height: auto;
+    }
+    
+    #addBookForm {
+        height: auto;
+        max-height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 15px; /* Slightly reduce base font size on mobile */
+    }
+    
+    #bookList th:nth-child(5),
+    #bookList td:nth-child(5) {
+        width: 20%; /* Slightly reduced on even smaller screens */
+    }
+    
+    #bookList th:nth-child(2),
+    #bookList td:nth-child(2) {
+        width: 40%; /* Increase title width further */
+    }
+    
+    #profileOffcanvas {
+        width: 300px;
+    }
+}

@@ -1,4 +1,4 @@
--- database/library.sql
+-- Database creation
 CREATE DATABASE IF NOT EXISTS libraryhub;
 USE libraryhub;
 
@@ -23,9 +23,10 @@ CREATE TABLE IF NOT EXISTS books (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     author VARCHAR(255) NOT NULL,
-    isbn VARCHAR(20) NOT NULL UNIQUE,
-    genre VARCHAR(100) NOT NULL,
-    quantity INT NOT NULL,
+    isbn VARCHAR(20) NULL,
+    genre VARCHAR(100) NULL,
+    quantity INT NOT NULL DEFAULT 1,
+    cover_image_url VARCHAR(255) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -57,14 +58,15 @@ CREATE TABLE IF NOT EXISTS penalties (
     FOREIGN KEY (loan_id) REFERENCES loans(id) ON DELETE CASCADE
 );
 
--- Notifications Table
-CREATE TABLE IF NOT EXISTS notifications (
+-- Messages Table
+CREATE TABLE IF NOT EXISTS messages (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     type VARCHAR(50) NOT NULL,
     title VARCHAR(255) NOT NULL,
-    message TEXT NOT NULL,
-    loan_id INT,
+    content TEXT NOT NULL,
+    loan_id INT NULL,
+    deleted BOOLEAN NOT NULL DEFAULT FALSE,
     `read` BOOLEAN NOT NULL DEFAULT FALSE,
     created_at DATETIME NOT NULL,
     INDEX (user_id),
@@ -73,3 +75,14 @@ CREATE TABLE IF NOT EXISTS notifications (
     FOREIGN KEY (loan_id) REFERENCES loans(id) ON DELETE SET NULL
 );
 
+-- System Message Tracking Table
+CREATE TABLE IF NOT EXISTS deleted_system_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    loan_id INT NOT NULL,
+    message_type VARCHAR(20) NOT NULL,
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_system_message (user_id, loan_id, message_type),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (loan_id) REFERENCES loans(id) ON DELETE CASCADE
+);

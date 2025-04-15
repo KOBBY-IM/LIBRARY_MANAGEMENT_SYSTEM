@@ -1,6 +1,19 @@
 const pool = require('../config/db');
 const bcrypt = require('bcryptjs');
 
+// Helper function to validate email format
+const isValidEmail = (email) => {
+    // Comprehensive email validation that handles:
+    // - Standard emails (user@example.com)
+    // - Subdomains (user@sub.example.com)
+    // - Country-specific domains (user@example.ac.uk)
+    // - Educational domains (student@university.edu)
+    // - Plus addressing (user+tag@example.com)
+    // - Alphanumeric and some special characters in local part
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+};
+
 // Add a new user
 const addUser = async (req, res) => {
     const { username, email, department, password, role } = req.body;
@@ -10,6 +23,11 @@ const addUser = async (req, res) => {
     // Validate required fields
     if (!username || !email || !password || !role) {
         return res.status(400).json({ success: false, message: 'Username, email, password, and role are required.' });
+    }
+
+    // Validate email format
+    if (!isValidEmail(email)) {
+        return res.status(400).json({ success: false, message: 'Please provide a valid email address.' });
     }
 
     try {
@@ -32,6 +50,12 @@ const addUser = async (req, res) => {
         }
     } catch (err) {
         console.error("Error adding user:", err); // Debugging: Log the full error
+        
+        // Check for duplicate entry error
+        if (err.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({ success: false, message: 'Username or email already exists.' });
+        }
+        
         res.status(500).json({ success: false, message: err.message });
     }
 };
@@ -124,12 +148,20 @@ const updateUserProfile = async (req, res) => {
 
         // Add email if provided
         if (email) {
+            // Validate email format
+            if (!isValidEmail(email)) {
+                return res.status(400).json({ success: false, message: 'Please provide a valid email address.' });
+            }
             updateFields.push('email = ?');
             params.push(email);
         }
 
         // Handle password update if provided
         if (password) {
+            // Add password length validation
+            if (password.length < 6) {
+                return res.status(400).json({ success: false, message: 'Password must be at least 6 characters long.' });
+            }
             const hashedPassword = await bcrypt.hash(password, 10);
             updateFields.push('password = ?');
             params.push(hashedPassword);

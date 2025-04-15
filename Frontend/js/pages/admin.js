@@ -155,26 +155,27 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!container) return;
 
     container.innerHTML = books
-      .map(
-        (book) => `
-            <tr>
-                <td>${book.title}</td>
-                <td>${book.author}</td>
-                <td>${book.isbn || "N/A"}</td>
-                <td>${book.genre || "N/A"}</td>
-                <td>${book.quantity}</td>
-                <td>
-                    <button class="btn btn-sm btn-warning edit-book-btn" data-id="${
-                      book.id
-                    }">Edit</button>
-                    <button class="btn btn-sm btn-danger delete-book-btn" data-id="${
-                      book.id
-                    }">Delete</button>
-                </td>
-            </tr>
-        `
-      )
-      .join("");
+        .map(
+            (book) => `
+                <tr>
+                    <td>
+                        ${book.cover_image_url ? 
+                            `<img src="${book.cover_image_url}" alt="${book.title}" width="50" height="75" onerror="this.src='../images/no-cover.png';">` : 
+                            '<div class="placeholder-image">No Cover</div>'}
+                    </td>
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td>${book.isbn || "N/A"}</td>
+                    <td>${book.genre || "N/A"}</td>
+                    <td>${book.quantity}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning edit-book-btn" data-id="${book.id}">Edit</button>
+                        <button class="btn btn-sm btn-danger delete-book-btn" data-id="${book.id}">Delete</button>
+                    </td>
+                </tr>
+            `
+        )
+        .join("");
 
     // Attach event listeners to buttons
     container.querySelectorAll(".delete-book-btn").forEach((button) => {
@@ -407,11 +408,174 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Admin Profile Sidebar functionality - Add this to admin.js
+  // Loans Management Section
+  function initializeLoansManagement() {
+    const loansSearchInput = document.getElementById('loan-search');
+    const loansSearchBtn = document.getElementById('loan-search-btn');
+    const loansStatusFilter = document.getElementById('loan-status-filter');
+    const loansList = document.getElementById('loans-list');
+    const loansErrorMessage = document.getElementById('loans-error-message');
+    
+    // Stats elements
+    const totalLoansCount = document.getElementById('total-loans-count');
+    const activeLoansCount = document.getElementById('active-loans-count');
+    const overdueLoansCount = document.getElementById('overdue-loans-count');
 
-  // Initialize profile sidebar
+    // Current filters state
+    let currentFilters = {
+        status: 'active', // Default to active loans
+        search: ''
+    };
+
+    // Helper function to show error messages
+    function showLoansError(message, type = 'danger') {
+        if (!loansErrorMessage) return;
+        
+        loansErrorMessage.textContent = message;
+        loansErrorMessage.className = `alert alert-${type}`;
+        loansErrorMessage.style.display = 'block';
+        
+        if (type === 'success') {
+            setTimeout(() => {
+                loansErrorMessage.style.display = 'none';
+            }, 3000);
+        }
+    }
+
+    // Function to fetch and display loans
+    async function fetchAndDisplayLoans() {
+        try {
+            // Show loading state
+            if (loansList) {
+                loansList.innerHTML = '<tr><td colspan="7" class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></td></tr>';
+            }
+
+            const response = await AdminLoans.fetchAllLoans(currentFilters, token);
+            
+            // Update stats
+            if (response.stats) {
+                if (totalLoansCount) totalLoansCount.textContent = response.stats.total_loans || 0;
+                if (activeLoansCount) activeLoansCount.textContent = response.stats.active_loans || 0;
+                if (overdueLoansCount) overdueLoansCount.textContent = response.stats.overdue_loans || 0;
+            }
+
+            // Render loans
+            renderLoans(response.data || []);
+        } catch (error) {
+            showLoansError(`Error: ${error.message}`);
+            if (loansList) {
+                loansList.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Failed to load loans data.</td></tr>';
+            }
+        }
+    }
+
+    // Function to render loans
+    function renderLoans(loans) {
+        if (!loansList) return;
+
+        if (loans.length === 0) {
+            loansList.innerHTML = '<tr><td colspan="7" class="text-center">No loans found matching the criteria</td></tr>';
+            return;
+        }
+
+        let html = '';
+        loans.forEach(loan => {
+            const loanStatus = AdminLoans.calculateLoanStatus(loan);
+            
+            html += `
+                <tr class="${loan.is_overdue && !loan.returned ? 'table-danger' : ''}">
+                    <td>${loan.book_title}</td>
+                    <td>${loan.book_author}</td>
+                    <td>
+                        <div>${loan.username}</div>
+                        <small class="text-muted">${loan.email}</small>
+                    </td>
+                    <td>${AdminLoans.formatDate(loan.borrow_date)}</td>
+                    <td>${AdminLoans.formatDate(loan.due_date)}</td>
+                    <td>
+                        <span class="badge ${loanStatus.badgeClass}">${loanStatus.label}</span>
+                    </td>
+                    <td>
+                        ${!loan.returned ? 
+                            `<button class="btn btn-sm btn-outline-primary return-loan-btn" data-id="${loan.id}">Return</button>` : 
+                            `<span class="text-muted">Returned on ${AdminLoans.formatDate(loan.return_date)}</span>`
+                        }
+                    </td>
+                </tr>
+            `;
+        });
+
+        loansList.innerHTML = html;
+
+        // Add event listeners to return buttons
+        document.querySelectorAll('.return-loan-btn').forEach(button => {
+            button.addEventListener('click', handleReturnLoan);
+        });
+    }
+
+    // Handle loan return
+    async function handleReturnLoan(event) {
+        const loanId = event.target.dataset.id;
+        
+        // Confirm before proceeding
+        if (!confirm('Are you sure you want to mark this loan as returned?')) {
+            return;
+        }
+        
+        // Show loading state
+        event.target.disabled = true;
+        event.target.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+        
+        try {
+            const response = await AdminLoans.returnBook(loanId, token);
+            
+            showLoansError(response.message || 'Book returned successfully.', 'success');
+            
+            // Refresh loans
+            await fetchAndDisplayLoans();
+        } catch (error) {
+            showLoansError(`Failed to return book: ${error.message}`);
+            
+            // Reset button state
+            event.target.disabled = false;
+            event.target.textContent = 'Return';
+        }
+    }
+
+    // Event handler for search button
+    if (loansSearchBtn) {
+        loansSearchBtn.addEventListener('click', () => {
+            if (loansSearchInput) {
+                currentFilters.search = loansSearchInput.value.trim();
+                fetchAndDisplayLoans();
+            }
+        });
+    }
+
+    // Add enter key support for search input
+    if (loansSearchInput) {
+        loansSearchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                currentFilters.search = loansSearchInput.value.trim();
+                fetchAndDisplayLoans();
+            }
+        });
+    }
+
+    // Event handler for status filter
+    if (loansStatusFilter) {
+        loansStatusFilter.addEventListener('change', () => {
+            currentFilters.status = loansStatusFilter.value;
+            fetchAndDisplayLoans();
+        });
+    }
+
+    // Initial load
+    fetchAndDisplayLoans();
+  }
+
+  // Admin Profile Sidebar functionality
   function setupProfileSidebar() {
-    const token = localStorage.getItem("token");
     const profileForm = document.getElementById("profile-sidebar-form");
     const profileAlert = document.getElementById("profile-sidebar-alert");
     const profileUsername = document.getElementById("sidebar-profile-username");
@@ -725,4 +889,5 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchAndDisplayBooks();
   fetchAndDisplayUsers();
   setupProfileSidebar();
+  initializeLoansManagement();
 });

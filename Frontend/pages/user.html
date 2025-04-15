@@ -45,7 +45,7 @@
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link sidebar-link active" href="#search-books">
-                                <i class="fas fa-search me-2"></i> Search Books
+                                <i class="fas fa-search me-2"></i> Books
                             </a>
                         </li>
                         <li class="nav-item">
@@ -65,9 +65,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link sidebar-link" href="#notifications">
-                                <i class="fas fa-bell me-2"></i> Notifications
-                                <span class="badge bg-danger rounded-pill ms-2" id="notification-badge">3</span>
+                            <a class="nav-link sidebar-link" href="#messages">
+                                <i class="fas fa-envelope me-2"></i> Messages
+                                <span class="badge bg-danger rounded-pill ms-2" id="message-badge">0</span>
                             </a>
                         </li>
                     </ul>
@@ -282,29 +282,29 @@
                                     <h5 class="card-title mb-4">Profile Information</h5>
 
                                     <!-- Profile feedback alert -->
-                                    <div id="profile-feedback" class="alert" style="display: none;"></div>
+                                    <div id="profile-feedback" class="alert" style="display: none"></div>
 
                                     <form id="profile-form">
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Username</label>
-                                            <input type="text" class="form-control" id="username" disabled>
+                                            <input type="text" class="form-control" id="username" disabled />
                                             <small class="text-muted">Usernames cannot be changed.</small>
                                         </div>
 
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email address*</label>
-                                            <input type="email" class="form-control" id="email" required>
+                                            <input type="email" class="form-control" id="email" required />
                                             <div class="invalid-feedback"></div>
                                         </div>
 
                                         <div class="mb-3">
                                             <label for="fullName" class="form-label">Full Name</label>
-                                            <input type="text" class="form-control" id="fullName">
+                                            <input type="text" class="form-control" id="fullName" />
                                         </div>
 
                                         <div class="mb-3">
                                             <label for="phone" class="form-label">Phone Number</label>
-                                            <input type="tel" class="form-control" id="phone">
+                                            <input type="tel" class="form-control" id="phone" />
                                         </div>
 
                                         <div class="mb-3">
@@ -312,27 +312,31 @@
                                             <textarea class="form-control" id="address" rows="3"></textarea>
                                         </div>
 
-                                        <hr class="my-4">
+                                        <hr class="my-4" />
 
                                         <h5 class="mb-3">Change Password</h5>
-                                        <p class="text-muted mb-3">Leave the fields below blank if you don't want to
-                                            change your password.</p>
+                                        <p class="text-muted mb-3">
+                                            Leave the fields below blank if you don't want to change
+                                            your password.
+                                        </p>
 
                                         <div class="mb-3">
                                             <label for="password" class="form-label">New Password</label>
-                                            <input type="password" class="form-control" id="password">
+                                            <input type="password" class="form-control" id="password" />
                                             <div class="invalid-feedback"></div>
                                             <small class="text-muted">Minimum 6 characters</small>
                                         </div>
 
                                         <div class="mb-3">
                                             <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                                            <input type="password" class="form-control" id="confirmPassword">
+                                            <input type="password" class="form-control" id="confirmPassword" />
                                             <div class="invalid-feedback"></div>
                                         </div>
 
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                                            <button type="submit" class="btn btn-primary">
+                                                Update Profile
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -363,77 +367,44 @@
                     </div>
                 </div>
 
-                <!-- Notifications Section -->
-                <section id="notifications" class="content-section">
+                <section id="messages" class="content-section">
                     <div class="section-header mb-4">
-                        <h2 class="section-title">Notifications</h2>
+                        <h2 class="section-title">Messages</h2><br>
+                        <p class="text-muted">Notifications about your book activities</p>
                     </div>
-                    <div class="notification-list">
-                        <div class="notification-item unread">
-                            <div class="notification-icon">
-                                <i class="fas fa-exclamation-circle"></i>
-                            </div>
-                            <div class="notification-content">
-                                <h5>"Programming Python" is due tomorrow</h5>
-                                <p>
-                                    Please return or renew the book to avoid overdue charges.
-                                </p>
-                                <span class="notification-time">2 hours ago</span>
-                            </div>
-                            <div class="notification-actions">
-                                <button class="btn btn-sm btn-primary">Renew</button>
-                                <button class="btn btn-sm btn-outline-secondary">
-                                    Mark as Read
-                                </button>
-                            </div>
+                    
+                    <!-- Search bar for messages -->
+                    <div class="search-container mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" id="message-search" class="form-control" placeholder="Search messages...">
                         </div>
-                        <div class="notification-item unread">
-                            <div class="notification-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="notification-content">
-                                <h5>Book reservation is ready</h5>
-                                <p>"Clean Architecture" is now available for pickup.</p>
-                                <span class="notification-time">Yesterday</span>
-                            </div>
-                            <div class="notification-actions">
-                                <button class="btn btn-sm btn-outline-secondary">
-                                    Mark as Read
-                                </button>
-                            </div>
-                        </div>
-                        <div class="notification-item unread">
-                            <div class="notification-icon">
-                                <i class="fas fa-info-circle"></i>
-                            </div>
-                            <div class="notification-content">
-                                <h5>New arrivals in your favorite category</h5>
-                                <p>
-                                    5 new Computer Science books have been added to our
-                                    collection.
-                                </p>
-                                <span class="notification-time">2 days ago</span>
-                            </div>
-                            <div class="notification-actions">
-                                <button class="btn btn-sm btn-outline-secondary">
-                                    Mark as Read
-                                </button>
+                    </div>
+                    
+                    <!-- Messages list -->
+                    <div class="message-list-container">
+                        <div id="messages-list" class="message-list">
+                            <!-- Messages will be displayed here -->
+                            <div class="text-center p-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading messages...</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
-            </div>
-        </div>
-    </div>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <h4 class="footer-title">About LibraryHub</h4>
-                    <p>We're dedicated to providing access to knowledge and fostering a community of lifelong learners.
-                        Our digital library offers thousands of resources across various disciplines.</p>
+                    <p>
+                        We're dedicated to providing access to knowledge and fostering a
+                        community of lifelong learners. Our digital library offers
+                        thousands of resources across various disciplines.
+                    </p>
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                     <h4 class="footer-title">Quick Links</h4>
@@ -458,7 +429,9 @@
                 <div class="col-lg-4">
                     <h4 class="footer-title">Contact Us</h4>
                     <div class="footer-contact">
-                        <p><i class="fas fa-map-marker-alt"></i> Garthdee Road Aberdeen</p>
+                        <p>
+                            <i class="fas fa-map-marker-alt"></i> Garthdee Road Aberdeen
+                        </p>
                         <p><i class="fas fa-phone"></i> +44 789 448 1288</p>
                         <p><i class="fas fa-envelope"></i> support@libraryhub.com</p>
                     </div>
@@ -478,7 +451,6 @@
         </div>
     </footer>
 
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JavaScript -->
@@ -486,7 +458,8 @@
     <script src="../js/api/auth.js"></script>
     <script src="../js/api/books.js"></script>
     <script src="../js/api/loans.js"></script>
-    <script src="../js/api/notifications.js"></script>
+    <script src="../js/api/messages.js"></script>
+    <script src="../js/components/MessageList.js"></script>
     <script src="../js/api/users.js"></script>
     <script src="../js/pages/user.js"></script>
 </body>

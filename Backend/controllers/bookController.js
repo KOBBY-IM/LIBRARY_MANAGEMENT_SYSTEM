@@ -2,15 +2,19 @@ const pool = require('../config/db');
 
 // Add a new book
 const addBook = async (req, res) => {
-    const { title, author, isbn, genre, quantity } = req.body;
+    const { title, author, isbn, genre, quantity, coverImageUrl } = req.body;
 
     try {
-        await pool.query('INSERT INTO books (title, author, isbn, genre, quantity) VALUES (?, ?, ?, ?, ?)', [title, author, isbn, genre, quantity]);
+        await pool.query(
+            'INSERT INTO books (title, author, isbn, genre, quantity, cover_image_url) VALUES (?, ?, ?, ?, ?, ?)', 
+            [title, author, isbn, genre, quantity, coverImageUrl]
+        );
         res.status(201).json({ success: true, message: 'Book added successfully' });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
 };
+
 
 // Get all books
 const getBooks = async (req, res) => {
@@ -33,10 +37,14 @@ const getBooks = async (req, res) => {
 // Update a book
 const updateBook = async (req, res) => {
     const { id } = req.params;
-    const { title, author, isbn, genre, quantity } = req.body;
-
+    const { title, author, isbn, genre, quantity, coverImageUrl } = req.body;
+    
     try {
-        await pool.query('UPDATE books SET title = ?, author = ?, isbn = ?, genre = ?, quantity = ? WHERE id = ?', [title, author, isbn, genre, quantity, id]);
+        await pool.query(
+            'UPDATE books SET title = ?, author = ?, isbn = ?, genre = ?, quantity = ?, cover_image_url = ? WHERE id = ?', 
+            [title, author, isbn, genre, quantity, coverImageUrl, id]
+        );
+        
         res.json({ success: true, message: 'Book updated successfully' });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
